@@ -16,7 +16,7 @@ public class Propiedad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_propiedad;
+    private Long id_propiedad;
     private int calificacion;
     private float precio;
     private String ubicacion;
@@ -25,7 +25,7 @@ public class Propiedad {
     @OneToMany(mappedBy = "propiedad")
     @JsonIgnore
     @ToString.Exclude
-    private Set<Arrendador_propiedad> calificacion_arrendador_propiedades;
+    private Set<Calificacion_propiedad> calificacion_calificacion_propiedades;
 
     @OneToOne(mappedBy = "propiedad")
     private Solicitud solicitud;

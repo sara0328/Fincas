@@ -10,11 +10,11 @@ import lombok.*;
 @RequiredArgsConstructor
 //@NoArgsConstructor
 @Entity( name = "arrendador_propiedad")
-public class Arrendador_propiedad {
+public class Calificacion_propiedad {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private int id_cal_propiedad;
+    private Long id_cal_propiedad;
     private int calificacion;
 
     @ManyToOne(cascade = CascadeType.ALL)

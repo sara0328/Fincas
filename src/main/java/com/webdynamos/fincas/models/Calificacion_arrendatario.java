@@ -1,10 +1,7 @@
 package com.webdynamos.fincas.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 
 @Getter
@@ -13,11 +10,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 //@NoArgsConstructor
 @Entity(name = "arrendador_arrendatario")
-public class Arrendador_arrendatario {
+public class Calificacion_arrendatario {
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int id_cal_arrendador;
+    private Long id_cal_arrendador;
     private int calificacion;
 
     @ManyToOne(cascade = CascadeType.ALL)

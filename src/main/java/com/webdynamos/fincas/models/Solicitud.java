@@ -15,7 +15,7 @@ import lombok.*;
 public class Solicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_solicitud;
+    private Long id_solicitud;
     private int duracion;
     private int estado;
 

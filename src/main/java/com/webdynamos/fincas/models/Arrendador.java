@@ -16,7 +16,7 @@ import java.util.Set;
 public class Arrendador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_arrendador;
+    private Long id_arrendador;
     private int calificacion;
     private String nombre;
     private  String apellido;
@@ -26,12 +26,12 @@ public class Arrendador {
     @OneToMany(mappedBy = "arrendador")
     @JsonIgnore
     @ToString.Exclude
-    private Set<Arrendador_arrendatario> arrendador_arrendatarios;
+    private Set<Calificacion_arrendatario> calificacion_arrendatarios;
 
     @OneToMany(mappedBy = "arrendador")
     @JsonIgnore
     @ToString.Exclude
-    private Set<Arrendador_propiedad> arrendador_propiedades;
+    private Set<Calificacion_propiedad> calificacion_propiedades;
 
     @OneToMany(mappedBy = "arrendador")
     @JsonIgnore

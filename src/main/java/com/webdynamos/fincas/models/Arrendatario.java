@@ -16,7 +16,7 @@ import java.util.Set;
 public class Arrendatario {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private int id_arrendatario;
+    private Long id_arrendatario;
     private String nombre;
     private  String apellido;
     private String telefono;
@@ -25,7 +25,7 @@ public class Arrendatario {
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     @ToString.Exclude
-    Set<Arrendador_arrendatario> calificacion_arrendador_arrendatarios;
+    Set<Calificacion_arrendatario> calificacion_calificacion_arrendatarios;
 
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
