@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import lombok.NonNull;
 
 @Service
 public class ArrendadorService {
@@ -30,12 +31,13 @@ public class ArrendadorService {
     }
 
     //Obtener por ID
+    @SuppressWarnings("null")
     public Arrendador obtenerArrendadorPorId(Long id)
     {
         return arrendadorRepository.findById(id).orElse(null);
     }
 
-    public Arrendador actualizarArrendador(Long id, Arrendador arrendador)
+    public Arrendador actualizarArrendador(@NonNull Long id, Arrendador arrendador)
     {
         if (arrendadorRepository.existsById(id))
         {

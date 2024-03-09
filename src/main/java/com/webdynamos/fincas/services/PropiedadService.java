@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import lombok.NonNull;
 
 @Service
 public class PropiedadService {
@@ -22,7 +23,8 @@ public class PropiedadService {
 
 
     //.save de JPA
-    public Propiedad CrearPropiedad(Propiedad propiedad)
+    @NonNull
+    public Propiedad CrearPropiedad(@NonNull Propiedad propiedad)
     {
         return propiedadRepository.save(propiedad);
     }
@@ -33,12 +35,12 @@ public class PropiedadService {
         return propiedadRepository.findAll();
     }
 
-    public Propiedad obtenerPropiedadPorId(Long id) {
+    public Propiedad obtenerPropiedadPorId(@NonNull Long id) {
         return propiedadRepository.findById(id).orElse(null);
     }
 
 
-    public Propiedad actualizarPropiedad(Long id, Propiedad propiedad)
+    public Propiedad actualizarPropiedad(@NonNull Long id, Propiedad propiedad)
     {
         if (propiedadRepository.existsById(id))
         {

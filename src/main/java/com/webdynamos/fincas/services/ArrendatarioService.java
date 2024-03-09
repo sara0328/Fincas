@@ -1,6 +1,6 @@
 package com.webdynamos.fincas.services;
 
-import com.webdynamos.fincas.models.Arrendador;
+// import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
 import com.webdynamos.fincas.repository.ArrendatarioRepository;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import lombok.NonNull;
 
 @Service
 public class ArrendatarioService {
@@ -20,6 +21,7 @@ public class ArrendatarioService {
         this.arrendatarioRepository = arrendatarioRepository;
     }
 
+    @NonNull
     public Arrendatario CrearArrendatario(Arrendatario arrendatario)
     {
         return arrendatarioRepository.save(arrendatario);

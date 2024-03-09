@@ -9,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import lombok.NonNull;
 
 @Service
 public class SolicitudService {
 
     private final SolicitudRepository solicitudRepository;
 
-
-    @Autowired
     public SolicitudService (SolicitudRepository solicitudRepository) {
         this.solicitudRepository = solicitudRepository;
     }
 
     //.save de JPA
-    public Solicitud CrearSolicitud(Solicitud solicitud)
+    public Solicitud CrearSolicitud(@NonNull Solicitud solicitud)
     {
         return solicitudRepository.save(solicitud);
     }
@@ -34,10 +34,13 @@ public class SolicitudService {
     }
 
     public Solicitud obtenerSolicitudPorId(Long id) {
-        return solicitudRepository.findById(id).orElse(null);
+        if (id != null) {
+            return solicitudRepository.findById(id).orElse(null);
+        }
+        return null;
     }
 
-    public Solicitud actualizarSolicitud(Long id, Solicitud solicitud)
+    public Solicitud actualizarSolicitud(@NonNull Long id, Solicitud solicitud)
     {
         if (solicitudRepository.existsById(id))
         {

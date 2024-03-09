@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import lombok.NonNull;
 
 @Service
 public class Calificacion_propiedadService {
@@ -17,7 +18,7 @@ public class Calificacion_propiedadService {
         this.calificacion_propiedadRepository = calificacion_propiedadRepository;
     }
 
-    public Calificacion_propiedad CrearArrendador_propiedad(Calificacion_propiedad calificacion_propiedad)
+    public Calificacion_propiedad CrearArrendador_propiedad(@NonNull Calificacion_propiedad calificacion_propiedad)
     {
         return calificacion_propiedadRepository.save(calificacion_propiedad);
     }
@@ -29,7 +30,10 @@ public class Calificacion_propiedadService {
     }
 
     public Calificacion_propiedad obtenerArrendador_propiedadPorId(Long id) {
-        return calificacion_propiedadRepository.findById(id).orElse(null);
+        if (id != null) {
+            return calificacion_propiedadRepository.findById(id).orElse(null);
+        }
+        return null;
     }
 
 }
