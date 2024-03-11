@@ -55,4 +55,10 @@ public class PropiedadService {
 
         return null;
     }
+
+
+    public boolean deletePropiedad(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deletePropiedad'");
+    }
 }

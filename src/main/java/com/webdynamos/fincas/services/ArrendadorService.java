@@ -19,6 +19,7 @@ public class ArrendadorService {
     }
 
 
+    @SuppressWarnings("null")
     public Arrendador CrearArrendador(Arrendador arrendador)
     {
         return arrendadorRepository.save(arrendador);
@@ -51,5 +52,17 @@ public class ArrendadorService {
         }
 
         return null;
+    }
+
+
+	public Arrendador getArrendadorById(Long id) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getArrendadorById'");
+	}
+
+
+    public boolean deleteArrendador(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteArrendador'");
     }
 }

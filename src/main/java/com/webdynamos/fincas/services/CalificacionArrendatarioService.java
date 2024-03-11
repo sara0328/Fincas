@@ -1,7 +1,7 @@
 package com.webdynamos.fincas.services;
 
 import com.webdynamos.fincas.models.Calificacion_arrendatario;
-import com.webdynamos.fincas.repository.Calificacion_arrendatarioRepository;
+import com.webdynamos.fincas.repository.CalificacionArrendatarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class Calificacion_arrendatarioService {
+public class CalificacionArrendatarioService {
 
-    private final Calificacion_arrendatarioRepository calificacion_arrendatarioRepository;
+    private final CalificacionArrendatarioRepository calificacion_arrendatarioRepository;
 
     @Autowired
-    public Calificacion_arrendatarioService(Calificacion_arrendatarioRepository calificacion_arrendatarioRepository)
+    public CalificacionArrendatarioService(CalificacionArrendatarioRepository calificacion_arrendatarioRepository)
     {
         this.calificacion_arrendatarioRepository = calificacion_arrendatarioRepository;
     }
@@ -31,10 +31,12 @@ public class Calificacion_arrendatarioService {
         return calificacion_arrendatarioRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     public Calificacion_arrendatario obtenerArrendador_arrendatarioPorId(Long id) {
-        return calificacion_arrendatarioRepository.findById(Optional.ofNullable(id).orElse(0L)).orElse(null);
+        return calificacion_arrendatarioRepository.findById(Optional.ofNullable(id).orElseGet(() -> 0L)).orElse(null);
     }
 
+    @SuppressWarnings("null")
     public Calificacion_arrendatario actualizarArrendador_arrendatario(Long id, Calificacion_arrendatario calificacion_arrendatario)
     {
         if (calificacion_arrendatarioRepository.existsById(id))
@@ -47,4 +49,25 @@ public class Calificacion_arrendatarioService {
 
         return null;
     }
+
+    @SuppressWarnings("null")
+    public boolean deleteCalificacionArrendatario(Long id) {
+        if (calificacion_arrendatarioRepository.existsById(id)) {
+            calificacion_arrendatarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressWarnings("null")
+    public Optional<Calificacion_arrendatario> updateCalificacionArrendatario(Long id,
+            Calificacion_arrendatario calificacionArrendatario) {
+        return calificacion_arrendatarioRepository.findById(id);
+    }
+
+    @SuppressWarnings("null")
+    public Optional<Calificacion_arrendatario> getCalificacionArrendatario(Long id) {
+        return calificacion_arrendatarioRepository.findById(id);
+    }
+
 }

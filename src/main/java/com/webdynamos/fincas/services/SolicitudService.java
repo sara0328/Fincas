@@ -28,7 +28,7 @@ public class SolicitudService {
     }
 
     //Encuentra todos los elementos
-    public List<Solicitud> ListarSolicitudew()
+    public List<Solicitud> ListarSolicitud()
     {
         return solicitudRepository.findAll();
     }
@@ -53,5 +53,14 @@ public class SolicitudService {
         }
 
         return null;
+    }
+
+    @SuppressWarnings("null")
+    public boolean deleteSolicitud(Long id) {
+        if (solicitudRepository.existsById(id)) {
+            solicitudRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

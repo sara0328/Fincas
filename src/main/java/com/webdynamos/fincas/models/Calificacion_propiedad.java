@@ -24,4 +24,8 @@ public class Calificacion_propiedad {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_propiedad", referencedColumnName = "id_propiedad")
     private Propiedad propiedad;
+
+    public <CalificacionPropiedad> void setCalificacion(CalificacionPropiedad calificacion2) {
+        this.calificacion = (int) calificacion2;
+    }
 }

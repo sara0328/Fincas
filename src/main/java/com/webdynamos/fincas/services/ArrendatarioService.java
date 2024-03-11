@@ -2,7 +2,6 @@ package com.webdynamos.fincas.services;
 
 // import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.models.Arrendatario;
-import com.webdynamos.fincas.repository.ArrendadorRepository;
 import com.webdynamos.fincas.repository.ArrendatarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,7 @@ public class ArrendatarioService {
         this.arrendatarioRepository = arrendatarioRepository;
     }
 
+    @SuppressWarnings("null")
     @NonNull
     public Arrendatario CrearArrendatario(Arrendatario arrendatario)
     {
@@ -54,5 +54,10 @@ public class ArrendatarioService {
         }
 
         return null;
+    }
+
+    public Arrendatario getArrendatarioById(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getArrendatarioById'");
     }
 }
