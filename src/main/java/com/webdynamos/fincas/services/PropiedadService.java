@@ -57,8 +57,13 @@ public class PropiedadService {
     }
 
 
+    @SuppressWarnings("null")
     public boolean deletePropiedad(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletePropiedad'");
+        if (propiedadRepository.existsById(id))
+        {
+            propiedadRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

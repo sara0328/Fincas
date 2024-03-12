@@ -16,14 +16,14 @@ public class ArrendatarioController {
     private ArrendatarioService arrendatarioService;
 
     @GetMapping
-    public ResponseEntity<?> getAllArrendatarios() {
-        // TODO: Implement logic to retrieve all arrendatarios
-        return new ResponseEntity<>("Get all arrendatarios", HttpStatus.OK);
+    public ResponseEntity<?> ListarArrendatarios() {
+        return new ResponseEntity<>(arrendatarioService.ListarArrendatarios(), HttpStatus.OK);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getArrendatarioById(@PathVariable Long id) {
-        Arrendatario arrendatario = arrendatarioService.getArrendatarioById(id);
+    public ResponseEntity<?> obtenerArrendatarioPorId(@PathVariable Long id) {
+        Arrendatario arrendatario = arrendatarioService.obtenerArrendatarioPorId(id);
         if (arrendatario != null) {
             return new ResponseEntity<>(arrendatario, HttpStatus.OK);
         } else {
@@ -32,20 +32,14 @@ public class ArrendatarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createArrendatario(@RequestBody Arrendatario arrendatario) {
-        // TODO: Implement logic to create a new arrendatario
-        return new ResponseEntity<>("Create arrendatario", HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateArrendatario(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
-        // TODO: Implement logic to update an existing arrendatario
-        return new ResponseEntity<>("Update arrendatario with ID: " + id, HttpStatus.OK);
+    public ResponseEntity<?> crearArrendatario (@RequestBody Arrendatario arrendatario) {
+        Arrendatario createdArrendatario = arrendatarioService.CrearArrendatario(arrendatario);
+        return new ResponseEntity<>(createdArrendatario, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteArrendatario(@PathVariable Long id) {
-        // TODO: Implement logic to delete an arrendatario by ID
         return new ResponseEntity<>("Delete arrendatario with ID: " + id, HttpStatus.OK);
     }
+    
 }

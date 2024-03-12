@@ -18,8 +18,8 @@ public class ArrendadorController {
     private ArrendadorService arrendadorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Arrendador> getArrendadorById(@PathVariable Long id) {
-        Arrendador arrendador = arrendadorService.getArrendadorById(id);
+    public ResponseEntity<Arrendador> obtenerArrendadorPorId(@PathVariable Long id) {
+        Arrendador arrendador = arrendadorService.obtenerArrendadorPorId(id);
         if (arrendador != null) {
             return new ResponseEntity<>(arrendador, HttpStatus.OK);
         } else {

@@ -11,7 +11,7 @@ import com.webdynamos.fincas.services.CalificacionArrendatarioService;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/calificaciones")
+@RequestMapping("/calificacionesArrendatario")
 public class CalificacionArrendatarioController {
 
     @Autowired

@@ -1,6 +1,7 @@
+package com.webdynamos.fincas.controllers;
+
 import com.webdynamos.fincas.models.Calificacion_propiedad;
 import com.webdynamos.fincas.services.CalificacionPropiedadService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,15 +10,12 @@ import java.util.List;
 
 
 
-
-
 @RestController
-@RequestMapping("/calificaciones")
+@RequestMapping("/calificacionesPropiedad")
 public class CalificacionPropiedadController {
 
     private final CalificacionPropiedadService calificacionPropiedadService;
 
-    @Autowired
     public CalificacionPropiedadController(CalificacionPropiedadService calificacionPropiedadService) {
         this.calificacionPropiedadService = calificacionPropiedadService;
     }

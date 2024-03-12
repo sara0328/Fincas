@@ -54,15 +54,15 @@ public class ArrendadorService {
         return null;
     }
 
+        @SuppressWarnings("null")
+        public boolean deleteArrendador(Long id) {
+            if (arrendadorRepository.existsById(id))
+            {
+                arrendadorRepository.deleteById(id);
+                return true;
+            }
+            return false;
+        }
+    } 
 
-	public Arrendador getArrendadorById(Long id) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getArrendadorById'");
-	}
 
-
-    public boolean deleteArrendador(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteArrendador'");
-    }
-}
