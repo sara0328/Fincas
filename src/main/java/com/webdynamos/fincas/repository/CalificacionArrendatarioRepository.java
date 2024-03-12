@@ -1,8 +1,8 @@
 package com.webdynamos.fincas.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.webdynamos.fincas.models.Calificacion_arrendatario;
+import com.webdynamos.fincas.models.CalificacionArrendatario;
 
-public interface CalificacionArrendatarioRepository extends JpaRepository<Calificacion_arrendatario, Long>{
+public interface CalificacionArrendatarioRepository extends JpaRepository<CalificacionArrendatario, Long>{
 
 }

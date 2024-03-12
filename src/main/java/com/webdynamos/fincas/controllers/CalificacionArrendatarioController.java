@@ -5,10 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.webdynamos.fincas.models.Calificacion_arrendatario;
+import com.webdynamos.fincas.models.CalificacionArrendatario;
 import com.webdynamos.fincas.services.CalificacionArrendatarioService;
 
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/calificacionesArrendatario")
@@ -18,8 +19,8 @@ public class CalificacionArrendatarioController {
     private CalificacionArrendatarioService calificacionArrendatarioService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Calificacion_arrendatario> getCalificacionArrendatario(@PathVariable("id") Long id) {
-        Optional<Calificacion_arrendatario> calificacionArrendatario = calificacionArrendatarioService.getCalificacionArrendatario(id);
+    public ResponseEntity<CalificacionArrendatario> getCalificacionArrendatario(@PathVariable("id") Long id) {
+        Optional<CalificacionArrendatario> calificacionArrendatario = calificacionArrendatarioService.getCalificacionArrendatario(id);
         if (calificacionArrendatario.isPresent()) {
             return new ResponseEntity<>(calificacionArrendatario.get(), HttpStatus.OK);
         } else {
@@ -28,10 +29,10 @@ public class CalificacionArrendatarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Calificacion_arrendatario> updateCalificacionArrendatario(@PathVariable("id") Long id, @RequestBody Calificacion_arrendatario calificacionArrendatario) {
-        Optional<Calificacion_arrendatario> updatedCalificacionArrendatario = calificacionArrendatarioService.updateCalificacionArrendatario(id, calificacionArrendatario);
+    public ResponseEntity<CalificacionArrendatario> updateCalificacionArrendatario(@PathVariable("id") Long id, @RequestBody CalificacionArrendatario calificacionArrendatario) {
+        Optional<CalificacionArrendatario> updatedCalificacionArrendatario = calificacionArrendatarioService.updateCalificacionArrendatario(id, calificacionArrendatario);
         if (updatedCalificacionArrendatario != null) {
-            return new ResponseEntity<Calificacion_arrendatario>(updatedCalificacionArrendatario.get(), HttpStatus.OK);
+            return new ResponseEntity<CalificacionArrendatario>(updatedCalificacionArrendatario.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
