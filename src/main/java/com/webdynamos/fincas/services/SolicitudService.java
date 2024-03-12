@@ -5,11 +5,9 @@ import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.models.Propiedad;
 import com.webdynamos.fincas.models.Solicitud;
 import com.webdynamos.fincas.repository.SolicitudRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.NonNull;
 
 @Service

@@ -2,7 +2,6 @@ package com.webdynamos.fincas.services;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class ArrendadorService {
 
     private final ArrendadorRepository arrendadorRepository;
 
-    @Autowired
     public ArrendadorService (ArrendadorRepository arrendadorRepository) {
         this.arrendadorRepository = arrendadorRepository;
     }

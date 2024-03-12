@@ -1,7 +1,6 @@
 package com.webdynamos.fincas.services;
 import com.webdynamos.fincas.models.Calificacion_propiedad;
 import com.webdynamos.fincas.repository.CalificacionPropiedadRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ public class CalificacionPropiedadService {
 
     private final CalificacionPropiedadRepository calificacion_propiedadRepository;
 
-    @Autowired
     public CalificacionPropiedadService(CalificacionPropiedadRepository calificacion_propiedadRepository)
     {
         this.calificacion_propiedadRepository = calificacion_propiedadRepository;
@@ -28,6 +26,7 @@ public class CalificacionPropiedadService {
         return calificacion_propiedadRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     public <CalificacionPropiedad> Calificacion_propiedad updateCalificacion(Long id,
             CalificacionPropiedad calificacion) {
         return calificacion_propiedadRepository.findById(id)

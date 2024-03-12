@@ -6,7 +6,6 @@ import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.models.Propiedad;
 import com.webdynamos.fincas.repository.ArrendatarioRepository;
 import com.webdynamos.fincas.repository.PropiedadRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import lombok.NonNull;
 public class PropiedadService {
     private final PropiedadRepository propiedadRepository;
 
-    @Autowired
         public PropiedadService (PropiedadRepository propiedadRepository) {
         this.propiedadRepository = propiedadRepository;
     }

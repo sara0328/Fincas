@@ -2,7 +2,6 @@ package com.webdynamos.fincas.services;
 
 import com.webdynamos.fincas.models.Calificacion_arrendatario;
 import com.webdynamos.fincas.repository.CalificacionArrendatarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class CalificacionArrendatarioService {
 
     private final CalificacionArrendatarioRepository calificacion_arrendatarioRepository;
 
-    @Autowired
     public CalificacionArrendatarioService(CalificacionArrendatarioRepository calificacion_arrendatarioRepository)
     {
         this.calificacion_arrendatarioRepository = calificacion_arrendatarioRepository;
