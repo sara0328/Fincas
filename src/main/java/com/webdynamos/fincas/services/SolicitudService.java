@@ -1,8 +1,6 @@
 package com.webdynamos.fincas.services;
 
 
-import com.webdynamos.fincas.models.Arrendatario;
-import com.webdynamos.fincas.models.Propiedad;
 import com.webdynamos.fincas.models.Solicitud;
 import com.webdynamos.fincas.repository.SolicitudRepository;
 import org.springframework.stereotype.Service;
@@ -53,7 +51,6 @@ public class SolicitudService {
         return null;
     }
 
-    @SuppressWarnings("null")
     public boolean deleteSolicitud(Long id) {
         if (solicitudRepository.existsById(id)) {
             solicitudRepository.deleteById(id);

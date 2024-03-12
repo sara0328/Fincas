@@ -17,7 +17,6 @@ public class ArrendadorService {
     }
 
 
-    @SuppressWarnings("null")
     public Arrendador CrearArrendador(Arrendador arrendador)
     {
         return arrendadorRepository.save(arrendador);
@@ -30,7 +29,6 @@ public class ArrendadorService {
     }
 
     //Obtener por ID
-    @SuppressWarnings("null")
     public Arrendador obtenerArrendadorPorId(Long id)
     {
         return arrendadorRepository.findById(id).orElse(null);
@@ -52,7 +50,6 @@ public class ArrendadorService {
         return null;
     }
 
-        @SuppressWarnings("null")
         public boolean deleteArrendador(Long id) {
             if (arrendadorRepository.existsById(id))
             {

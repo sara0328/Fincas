@@ -17,7 +17,6 @@ public class CalificacionArrendatarioService {
         this.calificacion_arrendatarioRepository = calificacion_arrendatarioRepository;
     }
 
-    @SuppressWarnings("null")
     public Calificacion_arrendatario CrearArrendador_arrendatario(Calificacion_arrendatario calificacion_arrendatario)
     {
         return calificacion_arrendatarioRepository.save(calificacion_arrendatario);
@@ -29,12 +28,10 @@ public class CalificacionArrendatarioService {
         return calificacion_arrendatarioRepository.findAll();
     }
 
-    @SuppressWarnings("null")
     public Calificacion_arrendatario obtenerArrendador_arrendatarioPorId(Long id) {
         return calificacion_arrendatarioRepository.findById(Optional.ofNullable(id).orElseGet(() -> 0L)).orElse(null);
     }
 
-    @SuppressWarnings("null")
     public Calificacion_arrendatario actualizarArrendador_arrendatario(Long id, Calificacion_arrendatario calificacion_arrendatario)
     {
         if (calificacion_arrendatarioRepository.existsById(id))
@@ -48,7 +45,6 @@ public class CalificacionArrendatarioService {
         return null;
     }
 
-    @SuppressWarnings("null")
     public boolean deleteCalificacionArrendatario(Long id) {
         if (calificacion_arrendatarioRepository.existsById(id)) {
             calificacion_arrendatarioRepository.deleteById(id);
@@ -57,13 +53,11 @@ public class CalificacionArrendatarioService {
         return false;
     }
 
-    @SuppressWarnings("null")
     public Optional<Calificacion_arrendatario> updateCalificacionArrendatario(Long id,
             Calificacion_arrendatario calificacionArrendatario) {
         return calificacion_arrendatarioRepository.findById(id);
     }
 
-    @SuppressWarnings("null")
     public Optional<Calificacion_arrendatario> getCalificacionArrendatario(Long id) {
         return calificacion_arrendatarioRepository.findById(id);
     }

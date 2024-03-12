@@ -25,7 +25,7 @@ public class Propiedad {
     @OneToMany(mappedBy = "propiedad")
     @JsonIgnore
     @ToString.Exclude
-    private Set<Calificacion_propiedad> calificacion_calificacion_propiedades;
+    private Set<CalificacionPropiedad> calificacion_calificacion_propiedades;
 
     @OneToOne(mappedBy = "propiedad")
     private Solicitud solicitud;

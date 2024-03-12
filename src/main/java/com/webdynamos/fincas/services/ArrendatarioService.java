@@ -19,7 +19,6 @@ public class ArrendatarioService {
         this.arrendatarioRepository = arrendatarioRepository;
     }
 
-    @SuppressWarnings("null")
     @NonNull
     public Arrendatario CrearArrendatario(Arrendatario arrendatario)
     {
@@ -34,13 +33,11 @@ public class ArrendatarioService {
     }
 
     //Obtener por ID
-    @SuppressWarnings("null")
     public Arrendatario obtenerArrendatarioPorId(Long id)
     {
         return arrendatarioRepository.findById(id).orElse(null);
     }
 
-    @SuppressWarnings("null")
     public Arrendatario actualizarArrendatario(Long id, Arrendatario arrendatario)
     {
         if (arrendatarioRepository.existsById(id))
@@ -57,7 +54,6 @@ public class ArrendatarioService {
         return null;
     }
 
-    @SuppressWarnings("null")
     public boolean deleteArrendatario(Long id) {
         if (arrendatarioRepository.existsById(id))
         {
