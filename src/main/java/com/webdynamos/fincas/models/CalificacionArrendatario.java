@@ -10,7 +10,7 @@ import lombok.*;
 @RequiredArgsConstructor
 //@NoArgsConstructor
 @Entity(name = "arrendador_arrendatario")
-public class Calificacion_arrendatario {
+public class CalificacionArrendatario {
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)

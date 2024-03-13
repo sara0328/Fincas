@@ -1,5 +1,5 @@
 package com.webdynamos.fincas.services;
-import com.webdynamos.fincas.models.Calificacion_propiedad;
+import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.repository.CalificacionPropiedadRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,38 +16,34 @@ public class CalificacionPropiedadService {
         this.calificacion_propiedadRepository = calificacion_propiedadRepository;
     }
 
-    public Calificacion_propiedad CrearArrendador_propiedad(@NonNull Calificacion_propiedad calificacion_propiedad)
+    public CalificacionPropiedad CrearArrendador_propiedad(@NonNull CalificacionPropiedad calificacion_propiedad)
     {
         return calificacion_propiedadRepository.save(calificacion_propiedad);
     }
 
     //Encuentra todos los elementos
-    public List<Calificacion_propiedad> getAllCalificaciones() {
+    public List<CalificacionPropiedad> getAllCalificaciones() {
         return calificacion_propiedadRepository.findAll();
     }
 
-    @SuppressWarnings("null")
-    public <CalificacionPropiedad> Calificacion_propiedad updateCalificacion(Long id,
-            CalificacionPropiedad calificacion) {
+    public CalificacionPropiedad updateCalificacion(Long id, CalificacionPropiedad calificacion) {
         return calificacion_propiedadRepository.findById(id)
             .map(calificacionPropiedad -> {
-                calificacionPropiedad.setCalificacion(calificacion);
+                calificacionPropiedad.setCalificacion(calificacion.getCalificacion()); // Update the line to set the calificacion property
                 return calificacion_propiedadRepository.save(calificacionPropiedad);
             })
             .orElseThrow(() -> new RuntimeException("Calificacion_propiedad not found with id: " + id));
     }
 
-    public Calificacion_propiedad createCalificacion(CalificacionPropiedadService calificacion) {
+    public CalificacionPropiedad createCalificacion(CalificacionPropiedad calificacion) {
         return calificacion_propiedadRepository.save(calificacion);
     }
 
-    @SuppressWarnings("null")
-    public <CalificacionPropiedad> Calificacion_propiedad getCalificacionById(Long id) {
+    public CalificacionPropiedad getCalificacionById(Long id) {
         return calificacion_propiedadRepository.findById(id).orElse(null);
-        
     }
 
-    @SuppressWarnings("null")
     public void deleteCalificacion(Long id) {
         calificacion_propiedadRepository.deleteById(id);
-    }}
+    }
+}

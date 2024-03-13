@@ -1,10 +1,7 @@
 package com.webdynamos.fincas.services;
 
 
-import com.webdynamos.fincas.models.Arrendador;
-import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.models.Propiedad;
-import com.webdynamos.fincas.repository.ArrendatarioRepository;
 import com.webdynamos.fincas.repository.PropiedadRepository;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +52,6 @@ public class PropiedadService {
     }
 
 
-    @SuppressWarnings("null")
     public boolean deletePropiedad(Long id) {
         if (propiedadRepository.existsById(id))
         {

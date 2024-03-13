@@ -1,6 +1,6 @@
 package com.webdynamos.fincas.controllers;
 
-import com.webdynamos.fincas.models.Calificacion_propiedad;
+import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.services.CalificacionPropiedadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,27 +21,26 @@ public class CalificacionPropiedadController {
     }
 
     @GetMapping
-    public <CalificacionPropiedad> ResponseEntity<List<CalificacionPropiedad>> getAllCalificaciones() {
-        @SuppressWarnings("unchecked")
-        List<CalificacionPropiedad> calificaciones = (List<CalificacionPropiedad>) calificacionPropiedadService.getAllCalificaciones();
+    public ResponseEntity<List<CalificacionPropiedad>> getAllCalificaciones() {
+        List<CalificacionPropiedad> calificaciones = calificacionPropiedadService.getAllCalificaciones();
         return new ResponseEntity<>(calificaciones, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Calificacion_propiedad> getCalificacionById(@PathVariable("id") Long id) {
-        Calificacion_propiedad calificacion = calificacionPropiedadService.getCalificacionById(id);
+    public ResponseEntity<CalificacionPropiedad> getCalificacionById(@PathVariable("id") Long id) {
+        CalificacionPropiedad calificacion = calificacionPropiedadService.getCalificacionById(id);
         return new ResponseEntity<>(calificacion, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Calificacion_propiedad> createCalificacion(@RequestBody CalificacionPropiedadService calificacion) {
-        Calificacion_propiedad createdCalificacion = calificacionPropiedadService.createCalificacion(calificacion);
+    public ResponseEntity<CalificacionPropiedad> createCalificacion(@RequestBody CalificacionPropiedad calificacion) {
+        CalificacionPropiedad createdCalificacion = calificacionPropiedadService.createCalificacion(calificacion);
         return new ResponseEntity<>(createdCalificacion, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Calificacion_propiedad> updateCalificacion(@PathVariable("id") Long id, @RequestBody Calificacion_propiedad calificacion) {
-        Calificacion_propiedad updatedCalificacion = calificacionPropiedadService.updateCalificacion(id, calificacion);
+    public ResponseEntity<CalificacionPropiedad> updateCalificacion(@PathVariable("id") Long id, @RequestBody CalificacionPropiedad calificacion) {
+        CalificacionPropiedad updatedCalificacion = calificacionPropiedadService.updateCalificacion(id, calificacion);
         return new ResponseEntity<>(updatedCalificacion, HttpStatus.OK);
     }
 

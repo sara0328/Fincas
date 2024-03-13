@@ -1,12 +1,13 @@
 package com.webdynamos.fincas.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.webdynamos.fincas.models.Calificacion_propiedad;
+
+import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.services.CalificacionPropiedadService;
 
-public interface CalificacionPropiedadRepository extends JpaRepository<Calificacion_propiedad, Long> {
+public interface CalificacionPropiedadRepository extends JpaRepository<CalificacionPropiedad, Long> {
 
-    Calificacion_propiedad save(CalificacionPropiedadService calificacion);
+    CalificacionPropiedad save(CalificacionPropiedadService calificacion);
 
 
 

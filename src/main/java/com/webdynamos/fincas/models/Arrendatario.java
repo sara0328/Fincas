@@ -25,7 +25,7 @@ public class Arrendatario {
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     @ToString.Exclude
-    Set<Calificacion_arrendatario> calificacion_calificacion_arrendatarios;
+    Set<CalificacionArrendatario> calificacion_calificacion_arrendatarios;
 
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore

@@ -1,6 +1,6 @@
 package com.webdynamos.fincas.services;
 
-import com.webdynamos.fincas.models.Calificacion_arrendatario;
+import com.webdynamos.fincas.models.CalificacionArrendatario;
 import com.webdynamos.fincas.repository.CalificacionArrendatarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +17,26 @@ public class CalificacionArrendatarioService {
         this.calificacion_arrendatarioRepository = calificacion_arrendatarioRepository;
     }
 
-    @SuppressWarnings("null")
-    public Calificacion_arrendatario CrearArrendador_arrendatario(Calificacion_arrendatario calificacion_arrendatario)
+    public CalificacionArrendatario CrearArrendador_arrendatario(CalificacionArrendatario calificacion_arrendatario)
     {
         return calificacion_arrendatarioRepository.save(calificacion_arrendatario);
     }
 
     //Encuentra todos los elementos
-    public List<Calificacion_arrendatario> ListarArrendador_arrendatario()
+    public List<CalificacionArrendatario> ListarArrendador_arrendatario()
     {
         return calificacion_arrendatarioRepository.findAll();
     }
 
-    @SuppressWarnings("null")
-    public Calificacion_arrendatario obtenerArrendador_arrendatarioPorId(Long id) {
+    public CalificacionArrendatario obtenerArrendador_arrendatarioPorId(Long id) {
         return calificacion_arrendatarioRepository.findById(Optional.ofNullable(id).orElseGet(() -> 0L)).orElse(null);
     }
 
-    @SuppressWarnings("null")
-    public Calificacion_arrendatario actualizarArrendador_arrendatario(Long id, Calificacion_arrendatario calificacion_arrendatario)
+    public CalificacionArrendatario actualizarArrendador_arrendatario(Long id, CalificacionArrendatario calificacion_arrendatario)
     {
         if (calificacion_arrendatarioRepository.existsById(id))
         {
-            Calificacion_arrendatario cambio = calificacion_arrendatarioRepository.findById(id != null ? id : 0L).orElse(null);
+            CalificacionArrendatario cambio = calificacion_arrendatarioRepository.findById(id != null ? id : 0L).orElse(null);
 
             cambio.setCalificacion(cambio.getCalificacion());
             return calificacion_arrendatarioRepository.save(cambio);
@@ -48,7 +45,6 @@ public class CalificacionArrendatarioService {
         return null;
     }
 
-    @SuppressWarnings("null")
     public boolean deleteCalificacionArrendatario(Long id) {
         if (calificacion_arrendatarioRepository.existsById(id)) {
             calificacion_arrendatarioRepository.deleteById(id);
@@ -57,14 +53,12 @@ public class CalificacionArrendatarioService {
         return false;
     }
 
-    @SuppressWarnings("null")
-    public Optional<Calificacion_arrendatario> updateCalificacionArrendatario(Long id,
-            Calificacion_arrendatario calificacionArrendatario) {
+    public Optional<CalificacionArrendatario> updateCalificacionArrendatario(Long id,
+            CalificacionArrendatario calificacionArrendatario) {
         return calificacion_arrendatarioRepository.findById(id);
     }
 
-    @SuppressWarnings("null")
-    public Optional<Calificacion_arrendatario> getCalificacionArrendatario(Long id) {
+    public Optional<CalificacionArrendatario> getCalificacionArrendatario(Long id) {
         return calificacion_arrendatarioRepository.findById(id);
     }
 
