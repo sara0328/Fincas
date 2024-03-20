@@ -16,13 +16,13 @@ public class ArrendatarioController {
     private ArrendatarioService arrendatarioService;
 
     @GetMapping
-    public ResponseEntity<?> ListarArrendatarios() {
+    public ResponseEntity<Object> ListarArrendatarios() {
         return new ResponseEntity<>(arrendatarioService.ListarArrendatarios(), HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerArrendatarioPorId(@PathVariable Long id) {
+    public ResponseEntity<Object> obtenerArrendatarioPorId(@PathVariable Long id) {
         Arrendatario arrendatario = arrendatarioService.obtenerArrendatarioPorId(id);
         if (arrendatario != null) {
             return new ResponseEntity<>(arrendatario, HttpStatus.OK);
@@ -31,8 +31,9 @@ public class ArrendatarioController {
         }
     }
 
+
     @PostMapping
-    public ResponseEntity<?> crearArrendatario (@RequestBody Arrendatario arrendatario) {
+    public ResponseEntity<Object> crearArrendatario (@RequestBody Arrendatario arrendatario) {
         Arrendatario createdArrendatario = arrendatarioService.CrearArrendatario(arrendatario);
         return new ResponseEntity<>(createdArrendatario, HttpStatus.CREATED);
     }
