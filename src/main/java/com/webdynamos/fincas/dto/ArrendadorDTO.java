@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 public class ArrendadorDTO {
 
-    private Long idArrendador;
+    private Long id_arrendador;
     private int calificacion;
     private String nombre;
     private String apellido;
