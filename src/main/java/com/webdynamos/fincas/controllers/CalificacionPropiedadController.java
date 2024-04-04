@@ -41,7 +41,11 @@ public class CalificacionPropiedadController {
     @PutMapping("/{id}")
     public ResponseEntity<CalificacionPropiedad> updateCalificacion(@PathVariable("id") Long id, @RequestBody CalificacionPropiedad calificacion) {
         CalificacionPropiedad updatedCalificacion = calificacionPropiedadService.updateCalificacion(id, calificacion);
-        return new ResponseEntity<>(updatedCalificacion, HttpStatus.OK);
+        if (updatedCalificacion != null) {
+            return new ResponseEntity<>(updatedCalificacion, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")

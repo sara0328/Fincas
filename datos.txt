@@ -1,0 +1,5 @@
+export sonar = sqp_569492b19d304346c4ee7747d13bc36e364b9885
+export projectKey = grupo_2_1
+export projectName = grupo_2_1
+
+export urlSonar = http://sonarqube.dynaco.co

@@ -1,6 +1,5 @@
 package com.webdynamos.fincas.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,11 @@ import com.webdynamos.fincas.services.ArrendatarioService;
 @RequestMapping("/arrendatarios")
 public class ArrendatarioController {
 
-    @Autowired
     private ArrendatarioService arrendatarioService;
+
+    public ArrendatarioController(ArrendatarioService arrendatarioService) {
+        this.arrendatarioService = arrendatarioService;
+    }
 
     @GetMapping
     public ResponseEntity<Object> ListarArrendatarios() {
@@ -31,6 +33,15 @@ public class ArrendatarioController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Arrendatario> actualizarArrendatario(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
+        Arrendatario updatedArrendatario = arrendatarioService.actualizarArrendatario(id, arrendatario);
+        if (updatedArrendatario != null) {
+            return new ResponseEntity<>(updatedArrendatario, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Object> crearArrendatario (@RequestBody Arrendatario arrendatario) {
@@ -39,8 +50,14 @@ public class ArrendatarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArrendatario(@PathVariable Long id) {
-        return new ResponseEntity<>("Delete arrendatario with ID: " + id, HttpStatus.OK);
-    }
+    public ResponseEntity<String> deleteArrendatario(@PathVariable Long id) {
+        boolean isDeleted = arrendatarioService.deleteArrendatario(id);
+        if (isDeleted) {
+            return new ResponseEntity<>("Arrendatario with ID: " + id + " was successfully deleted.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Arrendatario not found with ID: " + id, HttpStatus.NOT_FOUND);
+        }
+    }    
+    
     
 }
