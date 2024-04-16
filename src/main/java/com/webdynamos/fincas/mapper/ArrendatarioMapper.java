@@ -1,6 +1,7 @@
-package com.webdynamos.fincas.dto;
+package com.webdynamos.fincas.mapper;
 
 import org.mapstruct.Mapper;
+import com.webdynamos.fincas.dto.ArrendatarioDTO;
 import com.webdynamos.fincas.models.Arrendatario;
 
 @Mapper(componentModel = "spring")

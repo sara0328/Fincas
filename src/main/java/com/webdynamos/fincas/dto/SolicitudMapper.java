@@ -9,10 +9,10 @@ import com.webdynamos.fincas.models.Solicitud;
 @Mapper
 public interface SolicitudMapper {
 
-                    SolicitudMapper mapper = Mappers.getMapper(SolicitudMapper.class);
+    SolicitudMapper mapper = Mappers.getMapper(SolicitudMapper.class);
 
-                    @Mapping(source = "id_solicitud", target = "id_solicitud")
-                    @Mapping(source = "duracion", target = "duracion")
-                    @Mapping(source = "estado", target = "estado")
-                    SolicitudDTO solicitudToSolicitudDTO(Solicitud solicitud);
+    @Mapping(source = "id_solicitud", target = "id_solicitud")
+    @Mapping(source = "duracion", target = "duracion")
+    @Mapping(source = "estado", target = "estado")
+    SolicitudDTO solicitudToSolicitudDTO(Solicitud solicitud);
 }

@@ -1,52 +1,53 @@
 package com.webdynamos.fincas.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.webdynamos.fincas.models.Arrendatario;
+import com.webdynamos.fincas.dto.ArrendatarioDTO;
 import com.webdynamos.fincas.services.ArrendatarioService;
-
 
 @RestController
 @RequestMapping("/arrendatarios")
 public class ArrendatarioController {
 
-    private ArrendatarioService arrendatarioService;
+    private final ArrendatarioService arrendatarioService;
 
     public ArrendatarioController(ArrendatarioService arrendatarioService) {
         this.arrendatarioService = arrendatarioService;
     }
 
     @GetMapping
-    public ResponseEntity<Object> ListarArrendatarios() {
-        return new ResponseEntity<>(arrendatarioService.ListarArrendatarios(), HttpStatus.OK);
+    public ResponseEntity<List<ArrendatarioDTO>> listarArrendatarios() {
+        List<ArrendatarioDTO> arrendatarios = arrendatarioService.listarArrendatarios();
+        return new ResponseEntity<>(arrendatarios, HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Object> obtenerArrendatarioPorId(@PathVariable Long id) {
-        Arrendatario arrendatario = arrendatarioService.obtenerArrendatarioPorId(id);
-        if (arrendatario != null) {
-            return new ResponseEntity<>(arrendatario, HttpStatus.OK);
+    public ResponseEntity<?> obtenerArrendatarioPorId(@PathVariable Long id) {
+        ArrendatarioDTO arrendatarioDTO = arrendatarioService.obtenerArrendatarioPorId(id);
+        if (arrendatarioDTO != null) {
+            return new ResponseEntity<>(arrendatarioDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Arrendatario not found", HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Arrendatario> actualizarArrendatario(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
-        Arrendatario updatedArrendatario = arrendatarioService.actualizarArrendatario(id, arrendatario);
-        if (updatedArrendatario != null) {
-            return new ResponseEntity<>(updatedArrendatario, HttpStatus.OK);
+    public ResponseEntity<?> actualizarArrendatario(@PathVariable Long id, @RequestBody ArrendatarioDTO arrendatarioDTO) {
+        ArrendatarioDTO updatedArrendatarioDTO = arrendatarioService.actualizarArrendatario(id, arrendatarioDTO);
+        if (updatedArrendatarioDTO != null) {
+            return new ResponseEntity<>(updatedArrendatarioDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Object> crearArrendatario (@RequestBody Arrendatario arrendatario) {
-        Arrendatario createdArrendatario = arrendatarioService.CrearArrendatario(arrendatario);
-        return new ResponseEntity<>(createdArrendatario, HttpStatus.CREATED);
+    public ResponseEntity<ArrendatarioDTO> crearArrendatario(@RequestBody ArrendatarioDTO arrendatarioDTO) {
+        ArrendatarioDTO createdArrendatarioDTO = arrendatarioService.crearArrendatario(arrendatarioDTO);
+        return new ResponseEntity<>(createdArrendatarioDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -57,7 +58,5 @@ public class ArrendatarioController {
         } else {
             return new ResponseEntity<>("Arrendatario not found with ID: " + id, HttpStatus.NOT_FOUND);
         }
-    }    
-    
-    
+    }
 }
