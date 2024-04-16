@@ -1,46 +1,68 @@
 package com.webdynamos.fincas.services;
+import com.webdynamos.fincas.dto.CalificacionPropiedadDTO;
 import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.repository.CalificacionPropiedadRepository;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.NonNull;
 
 @Service
 public class CalificacionPropiedadService {
 
     private final CalificacionPropiedadRepository calificacion_propiedadRepository;
+    ModelMapper modelMapper;
 
-    public CalificacionPropiedadService(CalificacionPropiedadRepository calificacion_propiedadRepository)
+    @Autowired
+    public CalificacionPropiedadService(CalificacionPropiedadRepository calificacion_propiedadRepository, ModelMapper modelMapper)
     {
         this.calificacion_propiedadRepository = calificacion_propiedadRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public CalificacionPropiedad CrearArrendador_propiedad(@NonNull CalificacionPropiedad calificacion_propiedad)
+    public CalificacionPropiedadDTO CrearArrendador_propiedad(@NonNull CalificacionPropiedadDTO calificacion_propiedadDTO)
     {
-        return calificacion_propiedadRepository.save(calificacion_propiedad);
+        CalificacionPropiedad calificacionPropiedad = modelMapper.map(calificacion_propiedadDTO, CalificacionPropiedad.class);
+        calificacionPropiedad = calificacion_propiedadRepository.save(calificacionPropiedad);
+        
+        return modelMapper.map(calificacionPropiedad, CalificacionPropiedadDTO.class);
     }
 
     //Encuentra todos los elementos
-    public List<CalificacionPropiedad> getAllCalificaciones() {
-        return calificacion_propiedadRepository.findAll();
+    public List<CalificacionPropiedadDTO> getAllCalificaciones() {
+        List<CalificacionPropiedad> calificacionPropiedads = (List<CalificacionPropiedad>) calificacion_propiedadRepository.findAll();
+        List<CalificacionPropiedadDTO> calificacionPropiedadDTOs = calificacionPropiedads.stream().map(calificacionPropiedad -> modelMapper.map(calificacionPropiedad, CalificacionPropiedadDTO.class)).collect(Collectors.toList());
+        
+        return calificacionPropiedadDTOs;
     }
 
-    public CalificacionPropiedad updateCalificacion(Long id, CalificacionPropiedad calificacion) {
-        return calificacion_propiedadRepository.findById(id)
-            .map(calificacionPropiedad -> {
-                calificacionPropiedad.setCalificacion(calificacion.getCalificacion()); // Update the line to set the calificacion property
-                return calificacion_propiedadRepository.save(calificacionPropiedad);
-            })
-            .orElseThrow(() -> new RuntimeException("Calificacion_propiedad not found with id: " + id));
+    public CalificacionPropiedadDTO updateCalificacion(CalificacionPropiedadDTO calificacionPropiedadDTO) {
+        CalificacionPropiedad calificacionPropiedad = modelMapper.map(calificacionPropiedadDTO, CalificacionPropiedad.class);
+        calificacionPropiedad =calificacion_propiedadRepository.save(calificacionPropiedad);
+
+        return modelMapper.map(calificacionPropiedad,CalificacionPropiedadDTO.class);
     }
 
     public CalificacionPropiedad createCalificacion(CalificacionPropiedad calificacion) {
         return calificacion_propiedadRepository.save(calificacion);
     }
 
-    public CalificacionPropiedad getCalificacionById(Long id) {
-        return calificacion_propiedadRepository.findById(id).orElse(null);
+    public CalificacionPropiedadDTO getCalificacionById(Long id) {
+        Optional<CalificacionPropiedad> calificacionPropiedadOptional = calificacion_propiedadRepository.findById(id);
+        CalificacionPropiedadDTO calificacionPropiedadDTO = null;
+
+        if(calificacionPropiedadOptional.isPresent()){
+            CalificacionPropiedad calificacionPropiedad = calificacionPropiedadOptional.get();
+            calificacionPropiedadDTO = modelMapper.map(calificacionPropiedad,CalificacionPropiedadDTO.class);
+        }
+
+        return calificacionPropiedadDTO;
     }
 
     public void deleteCalificacion(Long id) {
