@@ -1,67 +1,59 @@
 package com.webdynamos.fincas.services;
 
-// import com.webdynamos.fincas.models.Arrendador;
+import com.webdynamos.fincas.dto.ArrendatarioDTO;
+import com.webdynamos.fincas.mapper.ArrendatarioMapper;
 import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.repository.ArrendatarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import lombok.NonNull;
+import java.util.stream.Collectors;
 
 @Service
 public class ArrendatarioService {
 
-
     private final ArrendatarioRepository arrendatarioRepository;
+    private final ArrendatarioMapper arrendatarioMapper;
 
-    
-    public ArrendatarioService (ArrendatarioRepository arrendatarioRepository) {
+    @Autowired
+    public ArrendatarioService(ArrendatarioRepository arrendatarioRepository, ArrendatarioMapper arrendatarioMapper) {
         this.arrendatarioRepository = arrendatarioRepository;
+        this.arrendatarioMapper = arrendatarioMapper;
     }
 
-    @NonNull
-    public Arrendatario CrearArrendatario(Arrendatario arrendatario)
-    {
-        return arrendatarioRepository.save(arrendatario);
+    public ArrendatarioDTO crearArrendatario(ArrendatarioDTO arrendatarioDTO) {
+        Arrendatario arrendatario = arrendatarioMapper.arrendatarioDTOToArrendatario(arrendatarioDTO);
+        Arrendatario savedArrendatario = arrendatarioRepository.save(arrendatario);
+        return arrendatarioMapper.arrendatarioToArrendatarioDTO(savedArrendatario);
     }
 
-
-    //Encuentra todos los elementos
-    public List<Arrendatario> ListarArrendatarios()
-    {
-        return arrendatarioRepository.findAll();
+    public List<ArrendatarioDTO> listarArrendatarios() {
+        return arrendatarioRepository.findAll().stream()
+                .map(arrendatarioMapper::arrendatarioToArrendatarioDTO)
+                .collect(Collectors.toList());
     }
 
-    //Obtener por ID
-    public Arrendatario obtenerArrendatarioPorId(Long id)
-    {
-        return arrendatarioRepository.findById(id).orElse(null);
+    public ArrendatarioDTO obtenerArrendatarioPorId(Long id) {
+        return arrendatarioRepository.findById(id)
+                .map(arrendatarioMapper::arrendatarioToArrendatarioDTO)
+                .orElse(null);
     }
 
-    public Arrendatario actualizarArrendatario(Long id, Arrendatario arrendatario)
-    {
-        if (arrendatarioRepository.existsById(id))
-        {
-            Arrendatario cambio = arrendatarioRepository.findById(id).orElse(null);
-
-            cambio.setNombre(arrendatario.getNombre());
-            cambio.setApellido(arrendatario.getApellido());
-            cambio.setCorreo(arrendatario.getCorreo());
-            cambio.setTelefono(arrendatario.getTelefono());
-            return arrendatarioRepository.save(cambio);
+    public ArrendatarioDTO actualizarArrendatario(Long id, ArrendatarioDTO arrendatarioDTO) {
+        if (arrendatarioRepository.existsById(id)) {
+            Arrendatario arrendatario = arrendatarioMapper.arrendatarioDTOToArrendatario(arrendatarioDTO);
+            arrendatario.setId(id); // Ensure the ID is set so the entity is updated
+            Arrendatario updatedArrendatario = arrendatarioRepository.save(arrendatario);
+            return arrendatarioMapper.arrendatarioToArrendatarioDTO(updatedArrendatario);
         }
-
         return null;
     }
 
     public boolean deleteArrendatario(Long id) {
-        if (arrendatarioRepository.existsById(id))
-        {
+        if (arrendatarioRepository.existsById(id)) {
             arrendatarioRepository.deleteById(id);
             return true;
         }
         return false;
     }
-
-
 }

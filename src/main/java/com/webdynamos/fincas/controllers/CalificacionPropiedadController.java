@@ -1,14 +1,13 @@
 package com.webdynamos.fincas.controllers;
 
-import com.webdynamos.fincas.models.CalificacionPropiedad;
+import com.webdynamos.fincas.dto.CalificacionPropiedadDTO;
 import com.webdynamos.fincas.services.CalificacionPropiedadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
- // Import the missing class
-
-
 
 @RestController
 @RequestMapping("/calificacionesPropiedad")
@@ -16,33 +15,38 @@ public class CalificacionPropiedadController {
 
     private final CalificacionPropiedadService calificacionPropiedadService;
 
+    @Autowired
     public CalificacionPropiedadController(CalificacionPropiedadService calificacionPropiedadService) {
         this.calificacionPropiedadService = calificacionPropiedadService;
     }
 
     @GetMapping
-    public ResponseEntity<List<CalificacionPropiedad>> getAllCalificaciones() {
-        List<CalificacionPropiedad> calificaciones = calificacionPropiedadService.getAllCalificaciones();
-        return new ResponseEntity<>(calificaciones, HttpStatus.OK);
+    public ResponseEntity<List<CalificacionPropiedadDTO>> getAllCalificaciones() {
+        List<CalificacionPropiedadDTO> calificacionesDTOs = calificacionPropiedadService.getAllCalificaciones();
+        return new ResponseEntity<>(calificacionesDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CalificacionPropiedad> getCalificacionById(@PathVariable("id") Long id) {
-        CalificacionPropiedad calificacion = calificacionPropiedadService.getCalificacionById(id);
-        return new ResponseEntity<>(calificacion, HttpStatus.OK);
+    public ResponseEntity<CalificacionPropiedadDTO> getCalificacionById(@PathVariable("id") Long id) {
+        CalificacionPropiedadDTO calificacionDTO = calificacionPropiedadService.getCalificacionById(id);
+        if (calificacionDTO != null) {
+            return new ResponseEntity<>(calificacionDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<CalificacionPropiedad> createCalificacion(@RequestBody CalificacionPropiedad calificacion) {
-        CalificacionPropiedad createdCalificacion = calificacionPropiedadService.createCalificacion(calificacion);
-        return new ResponseEntity<>(createdCalificacion, HttpStatus.CREATED);
+    public ResponseEntity<CalificacionPropiedadDTO> createCalificacion(@RequestBody CalificacionPropiedadDTO calificacionPropiedadDTO) {
+        CalificacionPropiedadDTO createdCalificacionDTO = calificacionPropiedadService.createCalificacion(calificacionPropiedadDTO);
+        return new ResponseEntity<>(createdCalificacionDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CalificacionPropiedad> updateCalificacion(@PathVariable("id") Long id, @RequestBody CalificacionPropiedad calificacion) {
-        CalificacionPropiedad updatedCalificacion = calificacionPropiedadService.updateCalificacion(id, calificacion);
-        if (updatedCalificacion != null) {
-            return new ResponseEntity<>(updatedCalificacion, HttpStatus.OK);
+    public ResponseEntity<CalificacionPropiedadDTO> updateCalificacion(@PathVariable("id") Long id, @RequestBody CalificacionPropiedadDTO calificacionPropiedadDTO) {
+        CalificacionPropiedadDTO updatedCalificacionDTO = calificacionPropiedadService.updateCalificacion(id, calificacionPropiedadDTO);
+        if (updatedCalificacionDTO != null) {
+            return new ResponseEntity<>(updatedCalificacionDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -50,7 +54,11 @@ public class CalificacionPropiedadController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCalificacion(@PathVariable("id") Long id) {
-        calificacionPropiedadService.deleteCalificacion(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean wasDeleted = calificacionPropiedadService.deleteCalificacion(id);
+        if (wasDeleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

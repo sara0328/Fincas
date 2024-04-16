@@ -1,49 +1,61 @@
 package com.webdynamos.fincas.services;
+
+import com.webdynamos.fincas.dto.CalificacionPropiedadDTO;
+import com.webdynamos.fincas.mapper.CalificacionPropiedadMapper;
 import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.repository.CalificacionPropiedadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import lombok.NonNull;
+import java.util.stream.Collectors;
 
 @Service
 public class CalificacionPropiedadService {
 
-    private final CalificacionPropiedadRepository calificacion_propiedadRepository;
+    private final CalificacionPropiedadRepository calificacionPropiedadRepository;
+    private final CalificacionPropiedadMapper calificacionPropiedadMapper;
 
-    public CalificacionPropiedadService(CalificacionPropiedadRepository calificacion_propiedadRepository)
-    {
-        this.calificacion_propiedadRepository = calificacion_propiedadRepository;
+    @Autowired
+    public CalificacionPropiedadService(CalificacionPropiedadRepository calificacionPropiedadRepository,
+                                        CalificacionPropiedadMapper calificacionPropiedadMapper) {
+        this.calificacionPropiedadRepository = calificacionPropiedadRepository;
+        this.calificacionPropiedadMapper = calificacionPropiedadMapper;
     }
 
-    public CalificacionPropiedad CrearArrendador_propiedad(@NonNull CalificacionPropiedad calificacion_propiedad)
-    {
-        return calificacion_propiedadRepository.save(calificacion_propiedad);
+    public CalificacionPropiedadDTO createCalificacion(CalificacionPropiedadDTO calificacionPropiedadDTO) {
+        CalificacionPropiedad calificacionPropiedad = calificacionPropiedadMapper.dtoToEntity(calificacionPropiedadDTO);
+        calificacionPropiedad = calificacionPropiedadRepository.save(calificacionPropiedad);
+        return calificacionPropiedadMapper.entityToDto(calificacionPropiedad);
     }
 
-    //Encuentra todos los elementos
-    public List<CalificacionPropiedad> getAllCalificaciones() {
-        return calificacion_propiedadRepository.findAll();
+    public List<CalificacionPropiedadDTO> getAllCalificaciones() {
+        return calificacionPropiedadRepository.findAll().stream()
+                .map(calificacionPropiedadMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
-    public CalificacionPropiedad updateCalificacion(Long id, CalificacionPropiedad calificacion) {
-        return calificacion_propiedadRepository.findById(id)
-            .map(calificacionPropiedad -> {
-                calificacionPropiedad.setCalificacion(calificacion.getCalificacion()); // Update the line to set the calificacion property
-                return calificacion_propiedadRepository.save(calificacionPropiedad);
-            })
-            .orElseThrow(() -> new RuntimeException("Calificacion_propiedad not found with id: " + id));
+    public CalificacionPropiedadDTO getCalificacionById(Long id) {
+        return calificacionPropiedadRepository.findById(id)
+                .map(calificacionPropiedadMapper::entityToDto)
+                .orElse(null);
     }
 
-    public CalificacionPropiedad createCalificacion(CalificacionPropiedad calificacion) {
-        return calificacion_propiedadRepository.save(calificacion);
+    public CalificacionPropiedadDTO updateCalificacion(Long id, CalificacionPropiedadDTO calificacionPropiedadDTO) {
+        return calificacionPropiedadRepository.findById(id)
+                .map(calificacionPropiedad -> {
+                    calificacionPropiedad.setCalificacion(calificacionPropiedadDTO.getCalificacion());
+                    calificacionPropiedad = calificacionPropiedadRepository.save(calificacionPropiedad);
+                    return calificacionPropiedadMapper.entityToDto(calificacionPropiedad);
+                })
+                .orElseThrow(() -> new RuntimeException("CalificacionPropiedad not found with id: " + id));
     }
 
-    public CalificacionPropiedad getCalificacionById(Long id) {
-        return calificacion_propiedadRepository.findById(id).orElse(null);
-    }
-
-    public void deleteCalificacion(Long id) {
-        calificacion_propiedadRepository.deleteById(id);
+    public boolean deleteCalificacion(Long id) {
+        if (calificacionPropiedadRepository.existsById(id)) {
+            calificacionPropiedadRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

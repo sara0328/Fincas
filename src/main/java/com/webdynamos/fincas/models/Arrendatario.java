@@ -38,4 +38,9 @@ public class Arrendatario {
     private Set<Propiedad> arrendatario_propiedades;
 
 
+    public void setId(Long id) {
+        this.id_arrendatario = id;
+    }
+
+
 }
