@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.webdynamos.fincas.models.Propiedad;
+
+import com.webdynamos.fincas.dto.PropiedadDTO;
 import com.webdynamos.fincas.services.PropiedadService;
 import java.util.List;
 
@@ -15,48 +17,35 @@ import java.util.List;
 @RequestMapping("/propiedades")
 public class PropiedadController {
 
-    @Autowired
     private PropiedadService propiedadService;
 
-    @GetMapping
-    public ResponseEntity<List<Propiedad>> getAllPropiedades() {
-        List<Propiedad> propiedades = propiedadService.ListarPropiedades();
-        return new ResponseEntity<>(propiedades, HttpStatus.OK);
+    @Autowired
+    public PropiedadController(PropiedadService propiedadService){
+        this.propiedadService = propiedadService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Propiedad> getPropiedadById(@PathVariable("id") Long id) {
-        Propiedad propiedad = propiedadService.obtenerPropiedadPorId(id);
-        if (propiedad != null) {
-            return new ResponseEntity<>(propiedad, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PropiedadDTO get(@PathVariable Long id){
+        return propiedadService.obtenerPropiedadPorId(id);
     }
 
-    @PostMapping
-    public ResponseEntity<Propiedad> createPropiedad(@RequestBody Propiedad propiedad) {
-        Propiedad createdPropiedad = propiedadService.CrearPropiedad(propiedad);
-        return new ResponseEntity<>(createdPropiedad, HttpStatus.CREATED);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<PropiedadDTO> get(){
+        return propiedadService.ListarPropiedades();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Propiedad> updatePropiedad(@PathVariable("id") Long id, @RequestBody Propiedad propiedad) {
-        Propiedad updatedPropiedad = propiedadService.actualizarPropiedad(id, propiedad);
-        if (updatedPropiedad != null) {
-            return new ResponseEntity<>(updatedPropiedad, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public PropiedadDTO create(@RequestBody PropiedadDTO propiedadDTO){
+        return propiedadService.CrearPropiedad(propiedadDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deletePropiedad(@PathVariable("id") Long id) {
-        boolean deleted = propiedadService.deletePropiedad(id);
-        if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public PropiedadDTO update(@RequestBody PropiedadDTO propiedadDTO){
+        return propiedadService.actualizarPropiedad(propiedadDTO);
+    }
+
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void delete(@PathVariable Long id){
+        propiedadService.deletePropiedad(id);
     }
 }

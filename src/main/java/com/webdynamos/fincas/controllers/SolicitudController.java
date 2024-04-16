@@ -1,8 +1,11 @@
 package com.webdynamos.fincas.controllers;
 
-import com.webdynamos.fincas.models.Solicitud;
+import com.webdynamos.fincas.dto.SolicitudDTO;
 import com.webdynamos.fincas.services.SolicitudService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,50 +18,33 @@ public class SolicitudController {
 
     private final SolicitudService solicitudService;
 
+    @Autowired
     public SolicitudController(SolicitudService solicitudService) {
         this.solicitudService = solicitudService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Solicitud>> getAllSolicitudes() {
-        List<Solicitud> solicitudes = solicitudService.ListarSolicitud();
-
-        return new ResponseEntity<>(solicitudes, HttpStatus.OK);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SolicitudDTO> get(){
+        return solicitudService.ListarSolicitud();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Solicitud> getSolicitudById(@PathVariable Long id) {
-        Solicitud solicitud = solicitudService.obtenerSolicitudPorId(id);
-        if (solicitud != null) {
-            return new ResponseEntity<>(solicitud, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SolicitudDTO get(@PathVariable Long id){
+        return solicitudService.obtenerSolicitudPorId(id);
     }
 
-    @PostMapping
-    public ResponseEntity<Solicitud> createSolicitud(@RequestBody Solicitud solicitud) {
-        Solicitud createdSolicitud = solicitudService.CrearSolicitud(solicitud);
-        return new ResponseEntity<>(createdSolicitud, HttpStatus.CREATED);
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public SolicitudDTO create(@RequestBody SolicitudDTO solicitudDTO){
+        return solicitudService.CrearSolicitud(solicitudDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Solicitud> updateSolicitud(@PathVariable Long id, @RequestBody Solicitud solicitud) {
-        Solicitud updatedSolicitud = solicitudService.actualizarSolicitud(id, solicitud);
-        if (updatedSolicitud != null) {
-            return new ResponseEntity<>(updatedSolicitud, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public SolicitudDTO update(@RequestBody SolicitudDTO solicitudDTO){
+        return solicitudService.actualizarSolicitud(solicitudDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSolicitud(@PathVariable Long id) {
-        boolean deleted = solicitudService.deleteSolicitud(id);
-        if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void delete(@PathVariable Long id){
+        solicitudService.deleteSolicitud(id);
     }
 }
