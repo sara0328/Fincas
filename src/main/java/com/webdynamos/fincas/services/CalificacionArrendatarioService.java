@@ -1,65 +1,77 @@
 package com.webdynamos.fincas.services;
 
+import com.webdynamos.fincas.dto.CalificacionArrendatarioDTO;
+import com.webdynamos.fincas.mapper.CalificacionArrendatarioMapper;
 import com.webdynamos.fincas.models.CalificacionArrendatario;
 import com.webdynamos.fincas.repository.CalificacionArrendatarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CalificacionArrendatarioService {
 
-    private final CalificacionArrendatarioRepository calificacion_arrendatarioRepository;
+    private final CalificacionArrendatarioRepository calificacionArrendatarioRepository;
+    private final CalificacionArrendatarioMapper calificacionArrendatarioMapper;
 
-    public CalificacionArrendatarioService(CalificacionArrendatarioRepository calificacion_arrendatarioRepository)
-    {
-        this.calificacion_arrendatarioRepository = calificacion_arrendatarioRepository;
+    @Autowired
+    public CalificacionArrendatarioService(CalificacionArrendatarioRepository calificacionArrendatarioRepository,
+                                           CalificacionArrendatarioMapper calificacionArrendatarioMapper) {
+        this.calificacionArrendatarioRepository = calificacionArrendatarioRepository;
+        this.calificacionArrendatarioMapper = calificacionArrendatarioMapper;
     }
 
-    public CalificacionArrendatario CrearArrendador_arrendatario(CalificacionArrendatario calificacion_arrendatario)
-    {
-        return calificacion_arrendatarioRepository.save(calificacion_arrendatario);
+    public CalificacionArrendatarioDTO crearCalificacionArrendatario(CalificacionArrendatarioDTO calificacionArrendatarioDTO) {
+        CalificacionArrendatario calificacionArrendatario = calificacionArrendatarioMapper.dtoToEntity(calificacionArrendatarioDTO);
+        calificacionArrendatario = calificacionArrendatarioRepository.save(calificacionArrendatario);
+        return calificacionArrendatarioMapper.entityToDto(calificacionArrendatario);
     }
 
-    //Encuentra todos los elementos
-    public List<CalificacionArrendatario> ListarArrendador_arrendatario()
-    {
-        return calificacion_arrendatarioRepository.findAll();
+    public List<CalificacionArrendatarioDTO> listarCalificacionArrendatario() {
+        return calificacionArrendatarioRepository.findAll().stream()
+                .map(calificacionArrendatarioMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
-    public CalificacionArrendatario obtenerArrendador_arrendatarioPorId(Long id) {
-        return calificacion_arrendatarioRepository.findById(Optional.ofNullable(id).orElseGet(() -> 0L)).orElse(null);
+    public CalificacionArrendatarioDTO obtenerCalificacionArrendatarioPorId(Long id) {
+        return calificacionArrendatarioRepository.findById(id)
+                .map(calificacionArrendatarioMapper::entityToDto)
+                .orElse(null);
     }
 
-    public CalificacionArrendatario actualizarArrendador_arrendatario(Long id, CalificacionArrendatario calificacion_arrendatario)
-    {
-        if (calificacion_arrendatarioRepository.existsById(id))
-        {
-            CalificacionArrendatario cambio = calificacion_arrendatarioRepository.findById(id != null ? id : 0L).orElse(null);
+    // Remove the nested class declaration
+    // public class CalificacionArrendatarioService {
 
-            cambio.setCalificacion(cambio.getCalificacion());
-            return calificacion_arrendatarioRepository.save(cambio);
+        // ... other service methods ...
+
+        public Optional<CalificacionArrendatario> getCalificacionArrendatario(Long id) {
+            // This method retrieves an Optional containing the calificacionArrendatario if found,
+            // or an empty Optional otherwise.
+            return calificacionArrendatarioRepository.findById(id);
         }
 
-        return null;
-    }
-
-    public boolean deleteCalificacionArrendatario(Long id) {
-        if (calificacion_arrendatarioRepository.existsById(id)) {
-            calificacion_arrendatarioRepository.deleteById(id);
-            return true;
+        public Optional<CalificacionArrendatario> actualizarCalificacionArrendatario(Long id, CalificacionArrendatario calificacionArrendatario) {
+            // This method first checks if a CalificacionArrendatario with the given id exists.
+            // If it does, it updates and saves it, then returns an Optional containing the updated calificacionArrendatario.
+            // If it doesn't, it returns an empty Optional.
+            return calificacionArrendatarioRepository.findById(id)
+                    .map(existingCalificacion -> {
+                        existingCalificacion.setCalificacion(calificacionArrendatario.getCalificacion());
+                        return calificacionArrendatarioRepository.save(existingCalificacion);
+                    });
         }
-        return false;
-    }
 
-    public Optional<CalificacionArrendatario> updateCalificacionArrendatario(Long id,
-            CalificacionArrendatario calificacionArrendatario) {
-        return calificacion_arrendatarioRepository.findById(id);
-    }
-
-    public Optional<CalificacionArrendatario> getCalificacionArrendatario(Long id) {
-        return calificacion_arrendatarioRepository.findById(id);
-    }
+        public boolean deleteCalificacionArrendatario(Long id) {
+            // This method attempts to delete the CalificacionArrendatario with the given id.
+            // It returns true if the entity is found and deleted, false otherwise.
+            return calificacionArrendatarioRepository.findById(id)
+                    .map(calificacion -> {
+                        calificacionArrendatarioRepository.delete(calificacion);
+                        return true;
+                    }).orElse(false);
+        }
+    // }
 
 }
