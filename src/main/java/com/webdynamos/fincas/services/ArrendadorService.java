@@ -26,10 +26,10 @@ public class ArrendadorService {
 
     public ArrendadorDTO crearArrendador(Arrendador arrendador) {
         Arrendador savedArrendador = arrendadorRepository.save(arrendador);
-        return arrendadorMapper.arrendadorToArrendadorDTO(savedArrendador);
+        return (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(savedArrendador);
     }
 
-    public List<ArrendadorDTO> listarArrendadores() {
+    public List<Object> listarArrendadores() {
         List<Arrendador> arrendadores = arrendadorRepository.findAll();
         return arrendadores.stream()
                            .map(arrendador -> arrendadorMapper.arrendadorToArrendadorDTO(arrendador))
@@ -38,7 +38,7 @@ public class ArrendadorService {
 
     public ArrendadorDTO obtenerArrendadorPorId(Long id) {
         Arrendador arrendador = arrendadorRepository.findById(id).orElse(null);
-        return arrendador != null ? arrendadorMapper.arrendadorToArrendadorDTO(arrendador) : null;
+        return arrendador != null ? (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(arrendador) : null;
     }
 
     public ArrendadorDTO actualizarArrendador(@NonNull Long id, Arrendador arrendador) {
@@ -50,7 +50,7 @@ public class ArrendadorService {
                 existingArrendador.setCorreo(arrendador.getCorreo());
                 existingArrendador.setTelefono(arrendador.getTelefono());
                 Arrendador updatedEntity = arrendadorRepository.save(existingArrendador);
-                return arrendadorMapper.arrendadorToArrendadorDTO(updatedEntity); // Update the method signature to accept an Arrendador object
+                return (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(updatedEntity); // Update the method signature to accept an Arrendador object
             }
         }
         return null;
