@@ -44,6 +44,6 @@ public class CalificacionPropiedadService {
     }
 
     public void deleteCalificacion(Long id) {
-        calificacionPropiedadRepository.deleteById(id);
+        calificacion_propiedadRepository.deleteById(id);
     }
 }

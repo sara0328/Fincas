@@ -1,6 +1,7 @@
 package com.webdynamos.fincas.controllers;
 
 import com.webdynamos.fincas.dto.CalificacionPropiedadDTO;
+import com.webdynamos.fincas.models.CalificacionPropiedad;
 import com.webdynamos.fincas.services.CalificacionPropiedadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,13 @@ public class CalificacionPropiedadController {
 
     @GetMapping
     public ResponseEntity<List<CalificacionPropiedadDTO>> getAllCalificaciones() {
-        List<CalificacionPropiedadDTO> calificaciones = calificacionPropiedadService.getAllCalificaciones();
-        return new ResponseEntity<>(calificaciones, HttpStatus.OK);
+        List<CalificacionPropiedad> calificaciones = calificacionPropiedadService.getAllCalificaciones();
+        return new ResponseEntity<List<CalificacionPropiedadDTO>>(calificaciones, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CalificacionPropiedadDTO> getCalificacionById(@PathVariable("id") Long id) {
-        CalificacionPropiedadDTO calificacion = calificacionPropiedadService.getCalificacionById(id);
+        CalificacionPropiedad calificacion = calificacionPropiedadService.getCalificacionById(id);
         if (calificacion != null) {
             return new ResponseEntity<>(calificacion, HttpStatus.OK);
         } else {
