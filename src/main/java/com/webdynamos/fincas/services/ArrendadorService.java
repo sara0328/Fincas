@@ -18,7 +18,7 @@ public class ArrendadorService {
 
     private final ArrendadorRepository arrendadorRepository;
     private final ArrendadorMapper arrendadorMapper; // Injected MapStruct mapper
-    ModelMapper modelMapper;
+    
 
     @Autowired
     public ArrendadorService(ArrendadorRepository arrendadorRepository, ArrendadorMapper arrendadorMapper) {
@@ -32,10 +32,12 @@ public class ArrendadorService {
     }
 
     public List<ArrendadorDTO> listarArrendadores() {
-        List<Arrendador> arrendadores = (List<Arrendador>) arrendadorRepository.findAll();
-        List<ArrendadorDTO> arrendadorDTOs = arrendadores.stream().map(arrendador -> modelMapper.map(arrendador, ArrendadorDTO.class)).collect(Collectors.toList());
-        return arrendadorDTOs;
+        List<Arrendador> arrendadores = arrendadorRepository.findAll();
+        return arrendadores.stream()
+                .map(arrendadorMapper::arrendadorToArrendadorDTO)
+                .collect(Collectors.toList());
     }
+    
 
     public ArrendadorDTO obtenerArrendadorPorId(Long id) {
         Arrendador arrendador = arrendadorRepository.findById(id).orElse(null);
