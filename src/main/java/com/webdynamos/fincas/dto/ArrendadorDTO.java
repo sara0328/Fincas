@@ -23,15 +23,4 @@ public class ArrendadorDTO {
     private String apellido;
     private String telefono;
     private String correo;
-	public ArrendadorDTO arrendadorToArrendadorDTO(Arrendador updatedEntity) {
-        ArrendadorDTO arrendadorDTO = new ArrendadorDTO();
-        arrendadorDTO.setId_arrendador(updatedEntity.getId_arrendador());
-        arrendadorDTO.setCalificacion(updatedEntity.getCalificacion());
-        arrendadorDTO.setNombre(updatedEntity.getNombre());
-        arrendadorDTO.setApellido(updatedEntity.getApellido());
-        arrendadorDTO.setTelefono(updatedEntity.getTelefono());
-        arrendadorDTO.setCorreo(updatedEntity.getCorreo());
-        return arrendadorDTO;
-
-	}
 }

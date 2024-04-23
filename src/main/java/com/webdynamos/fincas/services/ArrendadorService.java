@@ -5,6 +5,7 @@ import com.webdynamos.fincas.mapper.ArrendadorMapper;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ArrendadorService {
 
     private final ArrendadorRepository arrendadorRepository;
     private final ArrendadorMapper arrendadorMapper; // Injected MapStruct mapper
+    ModelMapper modelMapper;
 
     @Autowired
     public ArrendadorService(ArrendadorRepository arrendadorRepository, ArrendadorMapper arrendadorMapper) {
@@ -29,11 +31,10 @@ public class ArrendadorService {
         return (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(savedArrendador);
     }
 
-    public List<Object> listarArrendadores() {
-        List<Arrendador> arrendadores = arrendadorRepository.findAll();
-        return arrendadores.stream()
-                           .map(arrendador -> arrendadorMapper.arrendadorToArrendadorDTO(arrendador))
-                           .collect(Collectors.toList());
+    public List<ArrendadorDTO> listarArrendadores() {
+        List<Arrendador> arrendadores = (List<Arrendador>) arrendadorRepository.findAll();
+        List<ArrendadorDTO> arrendadorDTOs = arrendadores.stream().map(arrendador -> modelMapper.map(arrendador, ArrendadorDTO.class)).collect(Collectors.toList());
+        return arrendadorDTOs;
     }
 
     public ArrendadorDTO obtenerArrendadorPorId(Long id) {

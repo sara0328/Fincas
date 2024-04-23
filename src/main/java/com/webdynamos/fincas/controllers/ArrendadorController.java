@@ -1,11 +1,14 @@
 package com.webdynamos.fincas.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.webdynamos.fincas.dto.ArrendadorDTO;
+import org.springframework.http.MediaType;
 //import com.webdynamos.fincas.dto.ArrendadorMapper;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.services.ArrendadorService;
@@ -30,6 +33,12 @@ public class ArrendadorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ArrendadorDTO> get(){
+        return arrendadorService.listarArrendadores();
+    }
+
 
 
 @PostMapping
