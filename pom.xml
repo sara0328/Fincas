@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>fincas</name>
     <description>fincas</description>
-
+    <packaging>jar</packaging>
     <properties>
         <java.version>17</java.version>
        <!-- <sonar.host.url>${env.SONAR_HOST_URL}</sonar.host.url>
