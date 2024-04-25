@@ -52,14 +52,15 @@ public ResponseEntity<ArrendadorDTO> createArrendador(@RequestBody Arrendador ar
 
 
 @PutMapping("/{id}")
-public ResponseEntity<ArrendadorDTO> updateArrendador(@PathVariable Long id, @RequestBody Arrendador arrendador) {
-    ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(id, arrendador); 
+public ResponseEntity<ArrendadorDTO> updateArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
+    ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(arrendadorDTO); 
     if (updatedArrendadorDTO != null) {
         return new ResponseEntity<>(updatedArrendadorDTO, HttpStatus.OK);
     } else {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
+
 
 
 
