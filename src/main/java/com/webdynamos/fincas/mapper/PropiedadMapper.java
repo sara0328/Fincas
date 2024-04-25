@@ -10,13 +10,8 @@ import com.webdynamos.fincas.models.Propiedad;
 @Mapper
 public interface PropiedadMapper {
 
-    PropiedadMapper mapper = Mappers.getMapper(PropiedadMapper.class);
+    Propiedad propiedadDTOToPropiedad(PropiedadDTO propiedadDTO);
 
-    @Mapping(source = "id_propiedad", target = "id_propiedad")
-    @Mapping(source = "calificacion", target = "calificacion")
-    @Mapping(source = "precio", target = "precio")
-    @Mapping(source = "ubicacion", target = "ubicacion")
-    @Mapping(source = "disponibilidad", target = "disponibilidad")
     PropiedadDTO propiedadToPropiedadDTO(Propiedad propiedad);
 
 }
