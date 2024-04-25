@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CalificacionPropiedadDTO {
     private int calificacion;
+    private Long id_arrendatario;
 }

@@ -35,8 +35,8 @@ public class ArrendatarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarArrendatario(@PathVariable Long id, @RequestBody ArrendatarioDTO arrendatarioDTO) {
-        ArrendatarioDTO updatedArrendatarioDTO = arrendatarioService.actualizarArrendatario(id, arrendatarioDTO);
+    public ResponseEntity<?> actualizarArrendatario(@RequestBody ArrendatarioDTO arrendatarioDTO) {
+        ArrendatarioDTO updatedArrendatarioDTO = arrendatarioService.actualizarArrendatario(arrendatarioDTO);
         if (updatedArrendatarioDTO != null) {
             return new ResponseEntity<>(updatedArrendatarioDTO, HttpStatus.OK);
         } else {

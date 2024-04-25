@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.webdynamos.fincas.dto.ArrendadorDTO;
 import org.springframework.http.MediaType;
-//import com.webdynamos.fincas.dto.ArrendadorMapper;
-import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.services.ArrendadorService;
 
 
@@ -39,30 +37,21 @@ public class ArrendadorController {
         return arrendadorService.listarArrendadores();
     }
 
-
-
-@PostMapping
-public ResponseEntity<ArrendadorDTO> createArrendador(@RequestBody Arrendador arrendador) {
-    ArrendadorDTO createdArrendadorDTO = arrendadorService.crearArrendador(arrendador);
-    return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
-}
-
-
-
-
-
-@PutMapping("/{id}")
-public ResponseEntity<ArrendadorDTO> updateArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
-    ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(arrendadorDTO); 
-    if (updatedArrendadorDTO != null) {
-        return new ResponseEntity<>(updatedArrendadorDTO, HttpStatus.OK);
-    } else {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping
+    public ResponseEntity<ArrendadorDTO> createArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
+        ArrendadorDTO createdArrendadorDTO = arrendadorService.crearArrendador(arrendadorDTO);
+        return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
     }
-}
 
-
-
+    @PutMapping("/{id}")
+    public ResponseEntity<ArrendadorDTO> updateArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
+        ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(arrendadorDTO); 
+        if (updatedArrendadorDTO != null) {
+            return new ResponseEntity<>(updatedArrendadorDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArrendador(@PathVariable Long id) {

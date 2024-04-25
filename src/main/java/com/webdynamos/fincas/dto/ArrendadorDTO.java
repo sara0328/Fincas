@@ -14,7 +14,6 @@ import lombok.Getter;
 @Setter
 @Getter
 @AllArgsConstructor
-
 public class ArrendadorDTO {
 
     private Long id_arrendador;

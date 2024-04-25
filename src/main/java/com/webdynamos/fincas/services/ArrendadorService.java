@@ -1,73 +1,69 @@
 package com.webdynamos.fincas.services;
 
 import com.webdynamos.fincas.dto.ArrendadorDTO;
-import com.webdynamos.fincas.mapper.ArrendadorMapper;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import lombok.NonNull;
 
 @Service
 public class ArrendadorService {
 
+    @Autowired
     private final ArrendadorRepository arrendadorRepository;
-    private final ArrendadorMapper arrendadorMapper; // Injected MapStruct mapper
-    
 
     @Autowired
-    public ArrendadorService(ArrendadorRepository arrendadorRepository, ArrendadorMapper arrendadorMapper) {
+    private ModelMapper modelMapper;
+
+    
+    public ArrendadorService(ArrendadorRepository arrendadorRepository, ModelMapper modelMapper) {
         this.arrendadorRepository = arrendadorRepository;
-        this.arrendadorMapper = arrendadorMapper; // Mapper is being assigned
+        this.modelMapper = modelMapper;
     }
 
-    public ArrendadorDTO crearArrendador(Arrendador arrendador) {
-        Arrendador savedArrendador = arrendadorRepository.save(arrendador);
-        return (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(savedArrendador);
+    public ArrendadorDTO crearArrendador(ArrendadorDTO arrendadorDTO) {
+        Arrendador arrendador = this.modelMapper.map(arrendadorDTO, Arrendador.class);
+        arrendador = arrendadorRepository.save(arrendador);
+        return (ArrendadorDTO) this.modelMapper.map(arrendador, ArrendadorDTO.class);
     }
 
     public List<ArrendadorDTO> listarArrendadores() {
         List<Arrendador> arrendadores = arrendadorRepository.findAll();
-        return arrendadores.stream()
-                .map(arrendadorMapper::arrendadorToArrendadorDTO)
+        List<ArrendadorDTO> arrendadoresDTO = arrendadores.stream()
+                .map(arrendador -> modelMapper.map(arrendador,ArrendadorDTO.class))
                 .collect(Collectors.toList());
+        return arrendadoresDTO;
     }
     
 
     public ArrendadorDTO obtenerArrendadorPorId(Long id) {
-        Arrendador arrendador = arrendadorRepository.findById(id).orElse(null);
-        return arrendador != null ? (ArrendadorDTO) arrendadorMapper.arrendadorToArrendadorDTO(arrendador) : null;
+        Optional<Arrendador> arrendadorOptional = arrendadorRepository.findById(id);
+        ArrendadorDTO arrendadorDTO = null;
+        if(arrendadorOptional != null){
+            arrendadorDTO = modelMapper.map(arrendadorOptional.get(), ArrendadorDTO.class);
+        }         
+        return arrendadorDTO;
     }
 
-    public ArrendadorDTO actualizarArrendador(ArrendadorDTO arrendadorDTO) {
-        // Verificar si el ArrendadorDTO tiene un ID válido
-        if (arrendadorDTO.getId_arrendador() != null) {
-            // Verificar si el Arrendador con el ID dado existe en la base de datos
-            if (arrendadorRepository.existsById(arrendadorDTO.getId_arrendador())) {
-                // Obtener el Arrendador existente de la base de datos
-                Arrendador existingArrendador = arrendadorRepository.findById(arrendadorDTO.getId_arrendador()).orElse(null);
-                // Verificar si se encontró un Arrendador existente
-                if (existingArrendador != null) {
-                    // Mapear los datos del ArrendadorDTO recibido al Arrendador existente
-                    Arrendador arrendador = arrendadorMapper.arrendadorDTOToArrendador(arrendadorDTO);
-                    // Guardar los cambios en la base de datos y obtener el Arrendador actualizado
-                    arrendador = arrendadorRepository.save(arrendador);
-                    // Mapear el Arrendador actualizado a un ArrendadorDTO y devolverlo
-                    return arrendadorMapper.arrendadorToArrendadorDTO(arrendador);
-                }
-            }
+    public ArrendadorDTO actualizarArrendador(ArrendadorDTO arrendadorDTO) throws ValidationException{
+        
+        arrendadorDTO = obtenerArrendadorPorId(arrendadorDTO.getId_arrendador());
+        if( arrendadorDTO == null ){
+            throw new ValidationException(null);
         }
-        // Si el ArrendadorDTO no tiene un ID válido o no se encuentra en la base de datos, devolver null
-        return null;
+
+        Arrendador arrendador = modelMapper.map(arrendadorDTO, Arrendador.class);
+        arrendador = arrendadorRepository.save(arrendador);
+        arrendadorDTO = modelMapper.map(arrendador, ArrendadorDTO.class);
+        return arrendadorDTO;
     }
     
-    
-
     public boolean deleteArrendador(Long id) {
         if (arrendadorRepository.existsById(id)) {
             arrendadorRepository.deleteById(id);

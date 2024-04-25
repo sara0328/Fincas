@@ -17,9 +17,10 @@ import java.util.List;
 @RequestMapping("/propiedades")
 public class PropiedadController {
 
+    @Autowired
     private PropiedadService propiedadService;
 
-    @Autowired
+    
     public PropiedadController(PropiedadService propiedadService){
         this.propiedadService = propiedadService;
     }

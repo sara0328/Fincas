@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-//@NoArgsConstructor
 @Entity(name = "arrendador")
 public class Arrendador {
     @Id

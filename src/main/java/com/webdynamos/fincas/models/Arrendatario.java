@@ -25,12 +25,12 @@ public class Arrendatario {
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     @ToString.Exclude
-    Set<CalificacionArrendatario> calificacion_calificacion_arrendatarios;
+    private Set<CalificacionArrendatario> calificacion_calificacion_arrendatarios;
 
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     @ToString.Exclude
-    Set<Solicitud> arrendatario_solicitudes;
+    private Set<Solicitud> arrendatario_solicitudes;
 
 
     @OneToMany(mappedBy = "arrendatario")

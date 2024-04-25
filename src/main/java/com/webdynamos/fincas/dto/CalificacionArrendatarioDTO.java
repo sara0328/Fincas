@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CalificacionArrendatarioDTO {
     private int calificacion;
+    private Long id_arrendador;
+    private Long id_arrendatario;
 
     public boolean isPresent() {
         return calificacion != 0;

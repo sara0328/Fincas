@@ -16,9 +16,10 @@ import java.util.List;
 @RequestMapping("/solicitudes")
 public class SolicitudController {
 
+    @Autowired
     private final SolicitudService solicitudService;
 
-    @Autowired
+    
     public SolicitudController(SolicitudService solicitudService) {
         this.solicitudService = solicitudService;
     }

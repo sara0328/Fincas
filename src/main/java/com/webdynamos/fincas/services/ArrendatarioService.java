@@ -1,52 +1,65 @@
 package com.webdynamos.fincas.services;
 
 import com.webdynamos.fincas.dto.ArrendatarioDTO;
-import com.webdynamos.fincas.mapper.ArrendatarioMapper;
 import com.webdynamos.fincas.models.Arrendatario;
 import com.webdynamos.fincas.repository.ArrendatarioRepository;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ArrendatarioService {
 
-    private final ArrendatarioRepository arrendatarioRepository;
-    private final ArrendatarioMapper arrendatarioMapper;
-
     @Autowired
-    public ArrendatarioService(ArrendatarioRepository arrendatarioRepository, ArrendatarioMapper arrendatarioMapper) {
+    private final ArrendatarioRepository arrendatarioRepository;
+    
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public ArrendatarioService(ArrendatarioRepository arrendatarioRepository, ModelMapper modelMapper) {
         this.arrendatarioRepository = arrendatarioRepository;
-        this.arrendatarioMapper = arrendatarioMapper;
+        this.modelMapper = modelMapper;
     }
 
     public ArrendatarioDTO crearArrendatario(ArrendatarioDTO arrendatarioDTO) {
-        Arrendatario arrendatario = arrendatarioMapper.arrendatarioDTOToArrendatario(arrendatarioDTO);
-        Arrendatario savedArrendatario = arrendatarioRepository.save(arrendatario);
-        return arrendatarioMapper.arrendatarioToArrendatarioDTO(savedArrendatario);
+        Arrendatario arrendatario = this.modelMapper.map(arrendatarioDTO, Arrendatario.class);
+        arrendatario = arrendatarioRepository.save(arrendatario);
+        return (ArrendatarioDTO) this.modelMapper.map(arrendatario, ArrendatarioDTO.class);
     }
 
     public List<ArrendatarioDTO> listarArrendatarios() {
-        return arrendatarioRepository.findAll().stream()
-                .map(arrendatarioMapper::arrendatarioToArrendatarioDTO)
+        List<Arrendatario> arrendatarios = arrendatarioRepository.findAll();
+        List<ArrendatarioDTO> arrendatariosDTO = arrendatarios.stream()
+                .map(arrendatario -> modelMapper.map(arrendatario,ArrendatarioDTO.class))
                 .collect(Collectors.toList());
+        return arrendatariosDTO;
     }
 
     public ArrendatarioDTO obtenerArrendatarioPorId(Long id) {
-        return arrendatarioRepository.findById(id)
-                .map(arrendatarioMapper::arrendatarioToArrendatarioDTO)
-                .orElse(null);
+        Optional<Arrendatario> arrendatarioOptional = arrendatarioRepository.findById(id);
+        ArrendatarioDTO arrendatarioDTO = null;
+        if(arrendatarioOptional != null){
+            arrendatarioDTO = modelMapper.map(arrendatarioOptional.get(), ArrendatarioDTO.class);
+        }         
+        return arrendatarioDTO;
     }
 
-    public ArrendatarioDTO actualizarArrendatario(Long id, ArrendatarioDTO arrendatarioDTO) {
-        if (arrendatarioRepository.existsById(id)) {
-            Arrendatario arrendatario = arrendatarioMapper.arrendatarioDTOToArrendatario(arrendatarioDTO);
-            arrendatario.setId(id); // Ensure the ID is set so the entity is updated
-            Arrendatario updatedArrendatario = arrendatarioRepository.save(arrendatario);
-            return arrendatarioMapper.arrendatarioToArrendatarioDTO(updatedArrendatario);
+    public ArrendatarioDTO actualizarArrendatario(ArrendatarioDTO arrendatarioDTO) throws ValidationException{
+        
+        arrendatarioDTO = obtenerArrendatarioPorId(arrendatarioDTO.getId_arrendatario());
+        if( arrendatarioDTO == null ){
+            throw new ValidationException(null);
         }
-        return null;
+
+        Arrendatario arrendatario = modelMapper.map(arrendatarioDTO, Arrendatario.class);
+        arrendatario = arrendatarioRepository.save(arrendatario);
+        arrendatarioDTO = modelMapper.map(arrendatario, ArrendatarioDTO.class);
+        return arrendatarioDTO;
     }
 
     public boolean deleteArrendatario(Long id) {
