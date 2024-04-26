@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,4 +76,18 @@ public class PropiedadService {
         }
         return false;
     }
+
+    public List<PropiedadDTO> obtenerMejoresPropiedadesDisponibles() {
+        List<Propiedad> propiedades = propiedadRepository.findAll()
+                .stream()
+                .filter(propiedad -> propiedad.getDisponibilidad() > 0)
+                .sorted(Comparator.comparingInt(Propiedad::getCalificacion).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+
+        return propiedades.stream()
+                .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
+                .collect(Collectors.toList());
+    }
+    
 }

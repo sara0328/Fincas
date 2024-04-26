@@ -1,7 +1,5 @@
 package com.webdynamos.fincas.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,5 +46,10 @@ public class PropiedadController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@PathVariable Long id){
         propiedadService.deletePropiedad(id);
+    }
+
+    @GetMapping(value = "/mejores", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<PropiedadDTO> obtenerMejoresPropiedadesDisponibles() {
+        return propiedadService.obtenerMejoresPropiedadesDisponibles();
     }
 }
