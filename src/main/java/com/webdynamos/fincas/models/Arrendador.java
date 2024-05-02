@@ -18,7 +18,7 @@ public class Arrendador {
     private Long id_arrendador;
     private int calificacion;
     private String nombre;
-    private  String apellido;
+    private String apellido;
     private String telefono;
     private String correo;
 
