@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.webdynamos.fincas.dto.ArrendadorDTO;
+import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import org.springframework.http.MediaType;
 import com.webdynamos.fincas.services.ArrendadorService;
 
@@ -38,8 +39,8 @@ public class ArrendadorController {
     }
 
     @PostMapping
-    public ResponseEntity<ArrendadorDTO> createArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
-        ArrendadorDTO createdArrendadorDTO = arrendadorService.crearArrendador(arrendadorDTO);
+    public ResponseEntity<ArrendadorDTO> createArrendador(@RequestBody ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
+        ArrendadorDTO createdArrendadorDTO = arrendadorService.crearArrendador(arrendadorConPasswordDTO);
         return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
     }
 

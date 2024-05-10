@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class ArrendatarioDTO {
 
     private Long id_arrendatario;
+    private String username;
     private String nombre;
     private String apellido;
     private String telefono;

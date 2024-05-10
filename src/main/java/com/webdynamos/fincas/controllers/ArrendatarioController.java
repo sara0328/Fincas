@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.webdynamos.fincas.dto.ArrendatarioConPasswordDTO;
 import com.webdynamos.fincas.dto.ArrendatarioDTO;
 import com.webdynamos.fincas.services.ArrendatarioService;
 
@@ -45,8 +47,8 @@ public class ArrendatarioController {
     }
 
     @PostMapping
-    public ResponseEntity<ArrendatarioDTO> crearArrendatario(@RequestBody ArrendatarioDTO arrendatarioDTO) {
-        ArrendatarioDTO createdArrendatarioDTO = arrendatarioService.crearArrendatario(arrendatarioDTO);
+    public ResponseEntity<ArrendatarioDTO> crearArrendatario(@RequestBody ArrendatarioConPasswordDTO arrendatarioConPasswordDTO) {
+        ArrendatarioDTO createdArrendatarioDTO = arrendatarioService.crearArrendatario(arrendatarioConPasswordDTO);
         return new ResponseEntity<>(createdArrendatarioDTO, HttpStatus.CREATED);
     }
 

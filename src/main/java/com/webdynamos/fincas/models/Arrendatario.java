@@ -17,10 +17,12 @@ public class Arrendatario {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id_arrendatario;
+    private String username;
     private String nombre;
     private  String apellido;
     private String telefono;
     private String correo;
+    private String password;
 
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
