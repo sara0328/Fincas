@@ -5,40 +5,38 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.webdynamos.fincas.dto.UsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class JWTTokenService {
-// @Value("${jwt.secret}")
-    // private String secret = "DES6123";
+    private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
 
-    // @Value("${jwt.expiration}")
-    private long jwtExpiration = 99999999;
-    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);; // You need to set this key appropriately
+    @Value("${jwt.secret}")
+    private String secret; // Elimina el valor predeterminado para asegurar que se use la configuración externa
+
+    @Value("${jwt.expiration}")
+    private long jwtExpiration; // Elimina el valor predeterminado
+
+    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512); // Considera externalizar esta llave también
 
     public String generarToken(UsuarioDTO usuario) {
-
-        // byte[] secretBytes = secret.getBytes();
-        // Key jwtKey = new SecretKeySpec(secretBytes, SignatureAlgorithm.HS512.getJcaName());
         ObjectMapper objectMapper = new ObjectMapper();
         String username = "";
         try {
             username = objectMapper.writeValueAsString(usuario);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error serializando el usuario: {}", e.getMessage());
         }
-        
-        System.out.println(username  );
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
@@ -65,9 +63,6 @@ public class JWTTokenService {
     }
 
     public Claims decodificarToken(String jwtToken) {
-        // byte[] secretBytes = secret.getBytes();
-        // Key jwtKey = new SecretKeySpec(secretBytes, SignatureAlgorithm.HS512.getJcaName());
-
         return Jwts.parserBuilder()
                             .setSigningKey(jwtKey)
                             .build()
