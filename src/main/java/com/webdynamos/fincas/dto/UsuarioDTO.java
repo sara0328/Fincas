@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class UsuarioDTO {
     private String nombres;
     private String apellidos;
     private String correo;
+    private List<String> roles;  // Lista de roles del usuario
 }

@@ -31,7 +31,7 @@ public class AutenticacionController {
     @CrossOrigin
     @PostMapping(  value = "/autenticar-correo-contrasena", produces = MediaType.APPLICATION_JSON_VALUE)
     public String autenticar( @RequestParam String correo, @RequestParam String contrasena ){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(3, "Pablo", "Marquez", correo);
+        UsuarioDTO usuarioDTO = new UsuarioDTO(3, "Pablo", "Marquez", correo, null);
         return jwtTokenService.generarToken(usuarioDTO);
     }
 }

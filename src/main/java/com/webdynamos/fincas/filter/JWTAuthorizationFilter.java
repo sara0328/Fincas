@@ -70,7 +70,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 
 	private Claims validarToken(HttpServletRequest request) {
 		String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
-		return jwtTokenService.decodificarToken(jwtToken);
+		return jwtTokenService.decodeToken(jwtToken);
 	}
 	private String getUsername(HttpServletRequest request) {
 		String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");

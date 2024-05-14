@@ -1,19 +1,16 @@
 package com.webdynamos.fincas.services;
 
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webdynamos.fincas.dto.UsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,51 +19,57 @@ public class JWTTokenService {
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
 
     @Value("${jwt.secret}")
-    private String secret; // Elimina el valor predeterminado para asegurar que se use la configuración externa
+    private String base64SecretKey;
 
     @Value("${jwt.expiration}")
-    private long jwtExpiration; // Elimina el valor predeterminado
+    private long expirationTime;
 
-    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512); // Considera externalizar esta llave también
+    private Key jwtKey;
 
+    @PostConstruct
+    public void init() {
+        byte[] decodedKey = Base64.getDecoder().decode(base64SecretKey);
+        jwtKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA512");
+    }
+
+    /**
+     * Generates a JWT token for the given user details.
+     * @param usuario the user information to include in the JWT.
+     * @return a JWT string
+     */
     public String generarToken(UsuarioDTO usuario) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String username = "";
         try {
-            username = objectMapper.writeValueAsString(usuario);
-        } catch (Exception e) {
-            logger.error("Error serializando el usuario: {}", e.getMessage());
-        }
+            Claims claims = Jwts.claims().setSubject(usuario.getCorreo());
+            claims.put("roles", usuario.getRoles()); // Ensure UsuarioDTO has roles field
 
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+            Date now = new Date();
+            Date expiryDate = new Date(now.getTime() + expirationTime);
 
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-
-        return Jwts.builder()
-                .setSubject(username)
+            return Jwts.builder()
+                .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .claim("authorities", authorities.stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
-                .signWith(jwtKey, SignatureAlgorithm.HS512) // Use your appropriate signing algorithm
+                .signWith(jwtKey, SignatureAlgorithm.HS512)
                 .compact();
+        } catch (Exception e) {
+            logger.error("Error generating JWT token for user {}: ", usuario.getCorreo(), e);
+            throw new IllegalStateException("Failed to generate JWT token", e);
+        }
     }
 
     public String getUsername(String jwtToken){
-        return decodificarToken(jwtToken).getSubject();
+        return decodeToken(jwtToken).getSubject();
     }
 
     public Date getFechaExpiracion(String jwtToken){
-        return decodificarToken(jwtToken).getExpiration();
+        return decodeToken(jwtToken).getExpiration();
     }
 
-    public Claims decodificarToken(String jwtToken) {
+    public Claims decodeToken(String jwtToken) {
         return Jwts.parserBuilder()
-                            .setSigningKey(jwtKey)
-                            .build()
-                            .parseClaimsJws(jwtToken)
-                            .getBody();
+                    .setSigningKey(jwtKey)
+                    .build()
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
     }
 }
