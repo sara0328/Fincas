@@ -15,48 +15,47 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
-
+import org.springframework.web.cors.CorsConfigurationSource;
 import com.webdynamos.fincas.filter.JWTAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig implements ISecurityConfig {
 
-
-
-
     @Autowired
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
-	@Override
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
+
+    @Override
     @Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	@Override
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-	
-	@Override
+    @Override
     @Bean
-	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        
-    
-        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class).
-                                csrf(csrf -> csrf.ignoringRequestMatchers(ignoreSpecificRequests()));
-		return http.build();
-	}
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(ignoreSpecificRequests()).permitAll()
+                .anyRequest().authenticated())
+            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        return http.build();
+    }
 
-	private RequestMatcher ignoreSpecificRequests() {
+    private RequestMatcher ignoreSpecificRequests() {
         return new OrRequestMatcher(
-            // new AntPathRequestMatcher("/indicadoressuim/api/autenticacion"),
-            // new AntPathRequestMatcher("/indicadoressuim/api/peticion-mes"),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.POST.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.PUT.name()),
