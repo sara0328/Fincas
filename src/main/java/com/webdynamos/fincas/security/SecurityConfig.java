@@ -23,10 +23,6 @@ import com.webdynamos.fincas.filter.JWTAuthorizationFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig implements ISecurityConfig {
-
-
-
-
     @Autowired
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
@@ -60,7 +56,11 @@ public class SecurityConfig implements ISecurityConfig {
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.POST.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.DELETE.name())
+            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.DELETE.name()),
+            new AntPathRequestMatcher("/arrendador/autenticar/**", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/arrendador/autenticar/**", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/arrendador/autenticar/**", HttpMethod.PUT.name()),
+            new AntPathRequestMatcher("/arrendador/autenticar/**", HttpMethod.DELETE.name())
         );
     }
 }

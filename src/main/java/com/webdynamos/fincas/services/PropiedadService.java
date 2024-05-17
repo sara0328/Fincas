@@ -1,6 +1,5 @@
 package com.webdynamos.fincas.services;
 
-
 import com.webdynamos.fincas.dto.PropiedadDTO;
 import com.webdynamos.fincas.models.Propiedad;
 import com.webdynamos.fincas.repository.PropiedadRepository;

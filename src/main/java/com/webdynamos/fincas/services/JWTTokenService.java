@@ -10,7 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
+import com.webdynamos.fincas.dto.ArrendadorDTO;
 import com.webdynamos.fincas.dto.UsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,14 +27,14 @@ public class JWTTokenService {
     private long jwtExpiration = 99999999;
     private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);; // You need to set this key appropriately
 
-    public String generarToken(UsuarioDTO usuario) {
+    public String generarToken(ArrendadorDTO arrendadorDTO) {
 
         // byte[] secretBytes = secret.getBytes();
         // Key jwtKey = new SecretKeySpec(secretBytes, SignatureAlgorithm.HS512.getJcaName());
         ObjectMapper objectMapper = new ObjectMapper();
         String username = "";
         try {
-            username = objectMapper.writeValueAsString(usuario);
+            username = objectMapper.writeValueAsString(arrendadorDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
