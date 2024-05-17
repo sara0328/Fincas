@@ -59,7 +59,23 @@ public class SecurityConfig implements ISecurityConfig {
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.POST.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.DELETE.name())
+            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.DELETE.name()),
+            // Agregar el endpoint /propiedades para todos los métodos HTTP permitidos sin autenticación
+            new AntPathRequestMatcher("/propiedades", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/propiedades", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/propiedades", HttpMethod.PUT.name()),
+            new AntPathRequestMatcher("/propiedades", HttpMethod.DELETE.name()),
+            // Agregar el endpoint /arrendadores para todos los métodos HTTP permitidos sin autenticación
+            new AntPathRequestMatcher("/arrendadores", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/arrendadores", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/arrendadores", HttpMethod.PUT.name()),
+            new AntPathRequestMatcher("/arrendadores", HttpMethod.DELETE.name()),
+            // Agregar el endpoint /arrendatarios para todos los métodos HTTP permitidos sin autenticación
+            new AntPathRequestMatcher("/arrendatarios", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/arrendatarios", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/arrendatarios", HttpMethod.PUT.name()),
+            new AntPathRequestMatcher("/arrendatarios", HttpMethod.DELETE.name())
         );
     }
+    
 }
