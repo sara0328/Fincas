@@ -2,15 +2,26 @@ package com.webdynamos.fincas.services;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-import com.webdynamos.fincas.dto.UsuarioDTO;
+
+import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
+// import com.webdynamos.fincas.dto.UsuarioDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,38 +29,37 @@ import org.slf4j.LoggerFactory;
 public class JWTTokenService {
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
 
-    @Value("${jwt.secret}")
-    private String base64SecretKey;
+// @Value("${jwt.secret}")
+    // private String secret = "DES6123";
 
-    @Value("${jwt.expiration}")
+    // @Value("${jwt.expiration}")
+    private long jwtExpiration = 99999999;
+    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);; // You need to set this key appropriately
+
     private long expirationTime;
-
-    private Key jwtKey;
-
-    @PostConstruct
-    public void init() {
-        byte[] decodedKey = Base64.getDecoder().decode(base64SecretKey);
-        jwtKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA512");
-    }
 
     /**
      * Generates a JWT token for the given user details.
      * @param usuario the user information to include in the JWT.
      * @return a JWT string
      */
-    public String generarToken(UsuarioDTO usuario) {
+    public String generarToken(ArrendadorConPasswordDTO usuario) {
         try {
-            Claims claims = Jwts.claims().setSubject(usuario.getCorreo());
-            claims.put("roles", usuario.getRoles()); // Ensure UsuarioDTO has roles field
+            Claims claims = Jwts.claims().setSubject(usuario.getUsername());
+            claims.put("id", usuario.getId_arrendador()); // Ensure UsuarioDTO has roles field
 
             Date now = new Date();
-            Date expiryDate = new Date(now.getTime() + expirationTime);
+            Date expiryDate = new Date(now.getTime() + jwtExpiration);
+            Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
 
             return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(jwtKey, SignatureAlgorithm.HS512)
+                .claim("authorities", authorities.stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .compact();
         } catch (Exception e) {
             logger.error("Error generating JWT token for user {}: ", usuario.getCorreo(), e);

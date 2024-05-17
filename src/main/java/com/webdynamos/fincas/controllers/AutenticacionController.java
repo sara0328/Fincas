@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import com.webdynamos.fincas.dto.UsuarioDTO;
 import com.webdynamos.fincas.services.JWTTokenService;
 
@@ -21,17 +22,17 @@ public class AutenticacionController {
 
     @CrossOrigin
     @PostMapping(  value = "/autenticar", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String autenticar( @RequestBody UsuarioDTO usuarioDTO ){
-        System.out.println( usuarioDTO.getNombres() );
-        System.out.println( usuarioDTO.getApellidos() );
-        return jwtTokenService.generarToken(usuarioDTO);
+    public String autenticar( @RequestBody ArrendadorConPasswordDTO ArrendadorConPasswordDTO ){
+        System.out.println( ArrendadorConPasswordDTO.getNombre() );
+        System.out.println( ArrendadorConPasswordDTO.getApellido() );
+        return jwtTokenService.generarToken(ArrendadorConPasswordDTO);
     }
 
 
     @CrossOrigin
     @PostMapping(  value = "/autenticar-correo-contrasena", produces = MediaType.APPLICATION_JSON_VALUE)
     public String autenticar( @RequestParam String correo, @RequestParam String contrasena ){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(3, "Pablo", "Marquez", correo, null);
-        return jwtTokenService.generarToken(usuarioDTO);
+        ArrendadorConPasswordDTO arrendadorConPasswordDTO = new ArrendadorConPasswordDTO(null, 3, "Pablo", "Marquez", correo, null, contrasena, contrasena);
+        return jwtTokenService.generarToken(arrendadorConPasswordDTO);
     }
 }

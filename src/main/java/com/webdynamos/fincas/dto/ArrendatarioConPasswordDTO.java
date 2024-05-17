@@ -19,6 +19,7 @@ public class ArrendatarioConPasswordDTO {
         this.telefono = telefono;
         this.correo = correo;
         this.password = password;
+        
     }
     public Long getId_arrendatario() {
         return id_arrendatario;

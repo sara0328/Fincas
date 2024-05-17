@@ -1,9 +1,11 @@
 package com.webdynamos.fincas.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import com.webdynamos.fincas.dto.ArrendadorDTO;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
+import com.webdynamos.fincas.security.SecurityConfig;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.ValidationException;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.springframework.security.core.Authentication;
 
 @Service
 public class ArrendadorService {
@@ -23,47 +26,26 @@ public class ArrendadorService {
 
     @Autowired
     private ModelMapper modelMapper;
+    
+    @Autowired
+    private SecurityConfig securityConfig;
+    
 
     
-    public ArrendadorService(ArrendadorRepository arrendadorRepository, ModelMapper modelMapper) {
+    public ArrendadorService(ArrendadorRepository arrendadorRepository, ModelMapper modelMapper, SecurityConfig securityConfig) {
         this.arrendadorRepository = arrendadorRepository;
         this.modelMapper = modelMapper;
+        this.securityConfig = securityConfig;
     }
 
     public ArrendadorDTO crearArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
-        String passwordCifrada = sha256Hash(arrendadorConPasswordDTO.getPassword());
-        arrendadorConPasswordDTO.setPassword(passwordCifrada);
+        String claveCifrada = securityConfig.passwordEncoder().toString();
+        arrendadorConPasswordDTO.setPassword(claveCifrada);
         Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
         arrendador = arrendadorRepository.save(arrendador);
         return (ArrendadorDTO) this.modelMapper.map(arrendador, ArrendadorDTO.class);
     }
-
-    public static String sha256Hash(String input) {
-        try {
-            // Crear una instancia de MessageDigest para SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            // Aplicar el hash al input
-            byte[] hashBytes = digest.digest(input.getBytes());
-
-            // Convertir los bytes del hash a una representación hexadecimal
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            // Manejar la excepción si el algoritmo no está disponible
-            e.printStackTrace();
-            return null;
-        }
-    }
-
+    
     public List<ArrendadorDTO> listarArrendadores() {
         List<Arrendador> arrendadores = arrendadorRepository.findAll();
         List<ArrendadorDTO> arrendadoresDTO = arrendadores.stream()
@@ -101,5 +83,14 @@ public class ArrendadorService {
             return true;
         }
         return false;
+    }
+
+    public ArrendadorDTO autorizacion( Authentication authentication ) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("-----------------------");
+        System.out.println(  authentication.getName() );
+        ArrendadorDTO arrendador = objectMapper.readValue(authentication.getName(), ArrendadorDTO.class);
+        System.out.println("-----------------------"); 
+        return arrendador;
     }
 }

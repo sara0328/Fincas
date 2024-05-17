@@ -11,12 +11,13 @@ public class ArrendadorConPasswordDTO {
     private String password;
     public ArrendadorConPasswordDTO() {
     }
-    public ArrendadorConPasswordDTO(Long id_arrendador, int calificacion, String nombre, String apellido,
+    public ArrendadorConPasswordDTO(Long id_arrendador, int calificacion, String nombre, String apellido, String username,
             String telefono, String correo, String password) {
         this.id_arrendador = id_arrendador;
         this.calificacion = calificacion;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.username = username;
         this.telefono = telefono;
         this.correo = correo;
         this.password = password;
