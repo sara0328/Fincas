@@ -3,20 +3,16 @@ package com.webdynamos.fincas.services;
 import java.security.Key;
 import java.util.Date;
 import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-import javax.crypto.spec.SecretKeySpec;
-
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Value;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
-// import com.webdynamos.fincas.dto.UsuarioDTO;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,14 +25,8 @@ import org.slf4j.LoggerFactory;
 public class JWTTokenService {
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
 
-// @Value("${jwt.secret}")
-    // private String secret = "DES6123";
-
-    // @Value("${jwt.expiration}")
     private long jwtExpiration = 99999999;
-    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);; // You need to set this key appropriately
-
-    private long expirationTime;
+    private Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512); // You need to set this key appropriately
 
     /**
      * Generates a JWT token for the given user details.
@@ -46,7 +36,7 @@ public class JWTTokenService {
     public String generarToken(ArrendadorConPasswordDTO usuario) {
         try {
             Claims claims = Jwts.claims().setSubject(usuario.getUsername());
-            claims.put("id", usuario.getId_arrendador()); // Ensure UsuarioDTO has roles field
+            claims.put("id", usuario.getId_arrendador()); // Ensure ArrendadorConPasswordDTO has id_arrendador field
 
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + jwtExpiration);
@@ -67,11 +57,11 @@ public class JWTTokenService {
         }
     }
 
-    public String getUsername(String jwtToken){
+    public String getUsername(String jwtToken) {
         return decodeToken(jwtToken).getSubject();
     }
 
-    public Date getFechaExpiracion(String jwtToken){
+    public Date getFechaExpiracion(String jwtToken) {
         return decodeToken(jwtToken).getExpiration();
     }
 
