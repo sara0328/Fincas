@@ -21,6 +21,8 @@ public class Propiedad {
     private float precio;
     private String ubicacion;
     private int disponibilidad;
+    private String descripcion;
+    private String imagenUrl;
 
     @OneToMany(mappedBy = "propiedad")
     @JsonIgnore

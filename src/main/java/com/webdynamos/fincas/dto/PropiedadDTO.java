@@ -11,4 +11,6 @@ public class PropiedadDTO {
     private float precio;
     private String ubicacion;
     private int disponibilidad;
+    private String descripcion;
+    private String imagenUrl;
 }
