@@ -2,8 +2,10 @@ package com.webdynamos.fincas.services;
 
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import com.webdynamos.fincas.dto.ArrendadorDTO;
+import com.webdynamos.fincas.dto.UsuarioDTO;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
+import com.webdynamos.fincas.security.SecurityConfig;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,13 @@ public class ArrendadorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ArrendadorService(ArrendadorRepository arrendadorRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    private PasswordService passwordService;
+
+    public ArrendadorService(ArrendadorRepository arrendadorRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, PasswordService passwordService) {
         this.arrendadorRepository = arrendadorRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.passwordService = passwordService;
     }
 
     public boolean usuarioValido(ArrendadorConPasswordDTO usuarioDTO) {
@@ -41,8 +46,14 @@ public class ArrendadorService {
             System.out.println("Usuario encontrado: " + arrendador.getUsername());
             System.out.println("Contraseña proporcionada: " + usuarioDTO.getPassword());
             System.out.println("Contraseña almacenada: " + arrendador.getPassword());
-    
-            boolean passwordsMatch = passwordEncoder.matches(usuarioDTO.getPassword(), arrendador.getPassword());
+
+            
+            String claveCifrada = passwordService.encryptPassword(usuarioDTO.getPassword());
+            if(claveCifrada.equals(arrendador.getPassword())){
+                System.out.println("Las contraseñas coinciden: ");
+            }
+            boolean passwordsMatch = claveCifrada.equals(arrendador.getPassword());
+            System.out.println(claveCifrada + " --- "+arrendador.getPassword());
             System.out.println("Las contraseñas coinciden: " + passwordsMatch);
     
             return passwordsMatch;
@@ -54,7 +65,8 @@ public class ArrendadorService {
     
 
     public ArrendadorDTO crearArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
-        String claveCifrada = passwordEncoder.encode(arrendadorConPasswordDTO.getPassword());
+        //String claveCifrada = passwordEncoder.encode(arrendadorConPasswordDTO.getPassword());
+        String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
         arrendadorConPasswordDTO.setPassword(claveCifrada);
         Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
         arrendador = arrendadorRepository.save(arrendador);
