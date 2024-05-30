@@ -20,7 +20,7 @@ import com.webdynamos.fincas.filter.JWTAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig implements ISecurityConfig {
+public class SecurityConfig {
 
     @Autowired
     private JWTAuthorizationFilter jwtAuthorizationFilter;
@@ -28,19 +28,16 @@ public class SecurityConfig implements ISecurityConfig {
     @Autowired
     private CorsConfigurationSource corsConfigurationSource;
 
-    @Override
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-    @Override
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
@@ -56,26 +53,13 @@ public class SecurityConfig implements ISecurityConfig {
 
     private RequestMatcher ignoreSpecificRequests() {
         return new OrRequestMatcher(
-            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/jwt/security/autenticar/**", HttpMethod.DELETE.name()),
-            // Agregar el endpoint /propiedades para todos los métodos HTTP permitidos sin autenticación
-            new AntPathRequestMatcher("/propiedades", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/propiedades", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/propiedades", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/propiedades", HttpMethod.DELETE.name()),
-            // Agregar el endpoint /arrendadores para todos los métodos HTTP permitidos sin autenticación
-            new AntPathRequestMatcher("/arrendadores", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/arrendadores", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/arrendadores", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/arrendadores", HttpMethod.DELETE.name()),
-            // Agregar el endpoint /arrendatarios para todos los métodos HTTP permitidos sin autenticación
-            new AntPathRequestMatcher("/arrendatarios", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/arrendatarios", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/arrendatarios", HttpMethod.PUT.name()),
-            new AntPathRequestMatcher("/arrendatarios", HttpMethod.DELETE.name())
+            new AntPathRequestMatcher("/propiedades", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/propiedades/**", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/arrendadores/**", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/arrendatarios/**", HttpMethod.GET.name())
         );
     }
-    
 }

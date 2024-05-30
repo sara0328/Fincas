@@ -1,14 +1,14 @@
 package com.webdynamos.fincas.controllers;
 
-import java.util.List;
+import com.webdynamos.fincas.dto.ArrendatarioConPasswordDTO;
+import com.webdynamos.fincas.dto.ArrendatarioDTO;
+import com.webdynamos.fincas.services.ArrendatarioService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.webdynamos.fincas.dto.ArrendatarioConPasswordDTO;
-import com.webdynamos.fincas.dto.ArrendatarioDTO;
-import com.webdynamos.fincas.services.ArrendatarioService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/arrendatarios")

@@ -12,10 +12,6 @@ import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import org.springframework.http.MediaType;
 import com.webdynamos.fincas.services.ArrendadorService;
 
-
-
-
-
 @RestController
 @RequestMapping("/arrendadores")
 public class ArrendadorController {
@@ -46,7 +42,7 @@ public class ArrendadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ArrendadorDTO> updateArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {
-        ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(arrendadorDTO); 
+        ArrendadorDTO updatedArrendadorDTO = arrendadorService.actualizarArrendador(arrendadorDTO);
         if (updatedArrendadorDTO != null) {
             return new ResponseEntity<>(updatedArrendadorDTO, HttpStatus.OK);
         } else {

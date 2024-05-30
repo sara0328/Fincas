@@ -1,6 +1,5 @@
 package com.webdynamos.fincas.services;
 
-
 import com.webdynamos.fincas.dto.PropiedadDTO;
 import com.webdynamos.fincas.models.Propiedad;
 import com.webdynamos.fincas.repository.PropiedadRepository;
@@ -14,60 +13,44 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import lombok.NonNull;
-
 @Service
 public class PropiedadService {
 
     private final PropiedadRepository propiedadRepository;
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PropiedadService (PropiedadRepository propiedadRepository, ModelMapper modelMapper) {
+    public PropiedadService(PropiedadRepository propiedadRepository, ModelMapper modelMapper) {
         this.propiedadRepository = propiedadRepository;
         this.modelMapper = modelMapper;
     }
 
-    //.save de JPA
-    @NonNull
-    public PropiedadDTO CrearPropiedad(@NonNull PropiedadDTO propiedadDTO)
-    {
+    public PropiedadDTO crearPropiedad(PropiedadDTO propiedadDTO) {
         Propiedad propiedad = modelMapper.map(propiedadDTO, Propiedad.class);
         propiedad = propiedadRepository.save(propiedad);
-
         return modelMapper.map(propiedad, PropiedadDTO.class);
     }
 
-    //Encuentra todos los elementos
-    public List<PropiedadDTO> ListarPropiedades()
-    {
-        List<Propiedad> propiedads = (List<Propiedad>) propiedadRepository.findAll();
-        List<PropiedadDTO> propiedadDTOs = propiedads.stream().map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class)).collect(Collectors.toList());
-
-        return propiedadDTOs;
+    public List<PropiedadDTO> listarPropiedades() {
+        List<Propiedad> propiedades = propiedadRepository.findAll();
+        return propiedades.stream()
+                .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public PropiedadDTO obtenerPropiedadPorId(@NonNull Long id) {
+    public PropiedadDTO obtenerPropiedadPorId(Long id) {
         Optional<Propiedad> propiedadOptional = propiedadRepository.findById(id);
-        PropiedadDTO propiedadDTO = null; 
-
         if (propiedadOptional.isPresent()) {
-            Propiedad propiedad = propiedadOptional.get();
-            propiedadDTO = modelMapper.map(propiedad, PropiedadDTO.class);
+            return modelMapper.map(propiedadOptional.get(), PropiedadDTO.class);
         }
-
-        return propiedadDTO;
+        return null;
     }
 
-
-    public PropiedadDTO actualizarPropiedad(PropiedadDTO propiedadDTO)
-    {
+    public PropiedadDTO actualizarPropiedad(PropiedadDTO propiedadDTO) {
         Propiedad propiedad = modelMapper.map(propiedadDTO, Propiedad.class);
         propiedad = propiedadRepository.save(propiedad);
-
         return modelMapper.map(propiedad, PropiedadDTO.class);
     }
-
 
     public boolean deletePropiedad(Long id) {
         if (propiedadRepository.existsById(id)) {
@@ -89,5 +72,4 @@ public class PropiedadService {
                 .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
                 .collect(Collectors.toList());
     }
-    
 }
