@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
+import com.webdynamos.fincas.enums.ROLE;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -36,7 +37,8 @@ public class JWTTokenService {
     public String generarToken(ArrendadorConPasswordDTO usuario) {
         try {
             Claims claims = Jwts.claims().setSubject(usuario.getUsername());
-            claims.put("id", usuario.getId_arrendador()); // Ensure ArrendadorConPasswordDTO has id_arrendador field
+            claims.put("id", usuario.getId_arrendador()); 
+            claims.put("role", usuario.getRole().name());
 
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + jwtExpiration);
@@ -63,6 +65,10 @@ public class JWTTokenService {
 
     public Date getFechaExpiracion(String jwtToken) {
         return decodeToken(jwtToken).getExpiration();
+    }
+
+    public String getRole(String jwtToken){
+        return decodeToken(jwtToken).get("role", String.class);
     }
 
     public Claims decodeToken(String jwtToken) {

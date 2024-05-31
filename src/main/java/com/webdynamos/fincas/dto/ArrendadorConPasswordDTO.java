@@ -1,5 +1,7 @@
 package com.webdynamos.fincas.dto;
 
+import com.webdynamos.fincas.enums.ROLE;
+
 public class ArrendadorConPasswordDTO {
     private Long id_arrendador;
     private int calificacion;
@@ -9,6 +11,7 @@ public class ArrendadorConPasswordDTO {
     private String telefono;
     private String correo;
     private String password;
+    private ROLE role;
     public ArrendadorConPasswordDTO() {
     }
     public ArrendadorConPasswordDTO(Long id_arrendador, int calificacion, String nombre, String apellido, String username,
@@ -69,5 +72,11 @@ public class ArrendadorConPasswordDTO {
     }
     public void setPassword(String password) {
         this.password = password;
-    }      
+    }
+    public ROLE getRole(){
+        return this.role;
+    }
+    public void setRole(ROLE role){
+        this.role = role;
+    }
 }

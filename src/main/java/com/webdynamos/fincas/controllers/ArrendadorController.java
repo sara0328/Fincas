@@ -39,6 +39,18 @@ public class ArrendadorController {
         ArrendadorDTO createdArrendadorDTO = arrendadorService.crearArrendador(arrendadorConPasswordDTO);
         return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
     }
+/*
+    @PostMapping
+    public ResponseEntity<ArrendadorDTO> registrarArrendador(@RequestBody ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
+        ArrendadorDTO createdArrendadorDTO = arrendadorService.registrarComoArrendador(arrendadorConPasswordDTO);
+        return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping
+    public ResponseEntity<ArrendadorDTO> registrarArrendatario(@RequestBody ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
+        ArrendadorDTO createdArrendadorDTO = arrendadorService.registrarComoArrendatario(arrendadorConPasswordDTO);
+        return new ResponseEntity<>(createdArrendadorDTO, HttpStatus.CREATED);
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<ArrendadorDTO> updateArrendador(@RequestBody ArrendadorDTO arrendadorDTO) {

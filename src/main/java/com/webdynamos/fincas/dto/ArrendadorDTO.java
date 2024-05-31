@@ -1,6 +1,8 @@
 package com.webdynamos.fincas.dto;
 
 
+import com.webdynamos.fincas.enums.ROLE;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +22,5 @@ public class ArrendadorDTO {
     private String apellido;
     private String telefono;
     private String correo;
+    private ROLE role;
 }

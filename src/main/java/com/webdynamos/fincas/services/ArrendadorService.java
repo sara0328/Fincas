@@ -3,6 +3,7 @@ package com.webdynamos.fincas.services;
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
 import com.webdynamos.fincas.dto.ArrendadorDTO;
 import com.webdynamos.fincas.dto.UsuarioDTO;
+import com.webdynamos.fincas.enums.ROLE;
 import com.webdynamos.fincas.models.Arrendador;
 import com.webdynamos.fincas.repository.ArrendadorRepository;
 import com.webdynamos.fincas.security.SecurityConfig;
@@ -64,11 +65,44 @@ public class ArrendadorService {
     }
     
 
-    public ArrendadorDTO crearArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
-        //String claveCifrada = passwordEncoder.encode(arrendadorConPasswordDTO.getPassword());
+    public ROLE getUserRole(String username){
+        Optional<Arrendador> arrendadorOpt = arrendadorRepository.findByUsername(username);
+        if (arrendadorOpt.isPresent()) {
+            Arrendador arrendador = arrendadorOpt.get();
+            System.out.println("Usuario encontrado: " + arrendador.getUsername());
+            System.out.println("Rol de usuario: " + arrendador.getRole());
+
+            ROLE role = arrendador.getRole();
+            return role;
+        } else {
+            System.out.println("Usuario no encontrado.");
+        }
+        return null;
+    }
+
+    public ArrendadorDTO registrarComoArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO){
         String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
         arrendadorConPasswordDTO.setPassword(claveCifrada);
         Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
+        arrendador.setRole(ROLE.ARRENDADOR);
+        return this.modelMapper.map(arrendador, ArrendadorDTO.class);
+    }
+
+    public ArrendadorDTO registrarComoArrendatario(ArrendadorConPasswordDTO arrendadorConPasswordDTO){
+        String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
+        arrendadorConPasswordDTO.setPassword(claveCifrada);
+        Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
+        arrendador.setRole(ROLE.ARRENDATARIO);
+        return this.modelMapper.map(arrendador, ArrendadorDTO.class);
+    }
+
+    public ArrendadorDTO crearArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
+        //String claveCifrada = passwordEncoder.encode(arrendadorConPasswordDTO.getPassword());
+        String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
+        System.out.println("Rol del usuarioDTO: "+arrendadorConPasswordDTO.getRole().name());
+        arrendadorConPasswordDTO.setPassword(claveCifrada);        
+        Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
+        System.out.println("Rol del usuario instanciado: "+arrendador.getRole().name());
         arrendador = arrendadorRepository.save(arrendador);
         return this.modelMapper.map(arrendador, ArrendadorDTO.class);
     }

@@ -1,6 +1,7 @@
 package com.webdynamos.fincas.controllers;
 
 import com.webdynamos.fincas.dto.ArrendadorConPasswordDTO;
+import com.webdynamos.fincas.enums.ROLE;
 import com.webdynamos.fincas.services.ArrendadorService;
 import com.webdynamos.fincas.services.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class AutenticacionController {
         System.out.println(arrendadorConPasswordDTO.getApellido());
 
         if (arrendadorService.usuarioValido(arrendadorConPasswordDTO)) {
+            ROLE role = arrendadorService.getUserRole(arrendadorConPasswordDTO.getUsername());
+            arrendadorConPasswordDTO.setRole(role);
             String token = jwtTokenService.generarToken(arrendadorConPasswordDTO);
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } else {

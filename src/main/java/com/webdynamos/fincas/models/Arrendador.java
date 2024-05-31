@@ -2,6 +2,8 @@ package com.webdynamos.fincas.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.webdynamos.fincas.enums.ROLE;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +25,10 @@ public class Arrendador {
     private String telefono;
     private String correo;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ROLE role;
 
     @OneToMany(mappedBy = "arrendador")
     @JsonIgnore
