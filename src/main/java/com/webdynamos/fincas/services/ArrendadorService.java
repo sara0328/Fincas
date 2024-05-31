@@ -79,23 +79,6 @@ public class ArrendadorService {
         }
         return null;
     }
-
-    public ArrendadorDTO registrarComoArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO){
-        String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
-        arrendadorConPasswordDTO.setPassword(claveCifrada);
-        Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
-        arrendador.setRole(ROLE.ARRENDADOR);
-        return this.modelMapper.map(arrendador, ArrendadorDTO.class);
-    }
-
-    public ArrendadorDTO registrarComoArrendatario(ArrendadorConPasswordDTO arrendadorConPasswordDTO){
-        String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
-        arrendadorConPasswordDTO.setPassword(claveCifrada);
-        Arrendador arrendador = this.modelMapper.map(arrendadorConPasswordDTO, Arrendador.class);
-        arrendador.setRole(ROLE.ARRENDATARIO);
-        return this.modelMapper.map(arrendador, ArrendadorDTO.class);
-    }
-
     public ArrendadorDTO crearArrendador(ArrendadorConPasswordDTO arrendadorConPasswordDTO) {
         //String claveCifrada = passwordEncoder.encode(arrendadorConPasswordDTO.getPassword());
         String claveCifrada = passwordService.encryptPassword(arrendadorConPasswordDTO.getPassword());
