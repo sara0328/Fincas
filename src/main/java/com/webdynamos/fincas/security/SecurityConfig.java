@@ -64,4 +64,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/arrendatarios/**", HttpMethod.GET.name())
         );
     }
+
+    
 }
