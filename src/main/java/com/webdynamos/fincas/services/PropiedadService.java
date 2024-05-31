@@ -72,4 +72,17 @@ public class PropiedadService {
                 .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
                 .collect(Collectors.toList());
     }
+    public List<PropiedadDTO> findByArrendatarioId(Long arrendatarioId) {
+        List<Propiedad> propiedades = propiedadRepository.findByArrendatarioId(arrendatarioId);
+        return propiedades.stream()
+                .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<PropiedadDTO> findByArrendadorId(Long arrendadorId) {
+        List<Propiedad> propiedades = propiedadRepository.findByArrendadorId(arrendadorId);
+        return propiedades.stream()
+                .map(propiedad -> modelMapper.map(propiedad, PropiedadDTO.class))
+                .collect(Collectors.toList());
+    }
 }

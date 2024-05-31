@@ -35,6 +35,8 @@ public class Arrendatario {
     private Set<Solicitud> arrendatario_solicitudes;
 
 
+
+
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     private Set<Propiedad> arrendatario_propiedades;

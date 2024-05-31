@@ -2,6 +2,8 @@ package com.webdynamos.fincas.controllers;
 
 import java.util.List;
 
+import com.webdynamos.fincas.dto.PropiedadDTO;
+import com.webdynamos.fincas.services.PropiedadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +60,14 @@ public class ArrendadorController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Autowired
+    private PropiedadService propiedadService;
+
+    @GetMapping("/arrendador/propiedades")
+    public ResponseEntity<List<PropiedadDTO>> getPropiedades(@RequestParam Long arrendadorId) {
+        List<PropiedadDTO> propiedades = propiedadService.findByArrendadorId(arrendadorId);
+        return ResponseEntity.ok(propiedades);
     }
 }

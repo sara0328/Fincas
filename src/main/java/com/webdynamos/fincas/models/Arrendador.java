@@ -3,6 +3,7 @@ package com.webdynamos.fincas.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webdynamos.fincas.enums.ROLE;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,6 +40,10 @@ public class Arrendador {
     @JsonIgnore
     @ToString.Exclude
     private Set<CalificacionPropiedad> calificacion_propiedades;
+
+    @OneToMany(mappedBy = "arrendador")
+    @JsonIgnore
+    private Set<Propiedad> arrendador_propiedades;
 
     @OneToMany(mappedBy = "arrendador")
     @JsonIgnore

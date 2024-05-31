@@ -58,4 +58,6 @@ public class PropiedadController {
     public List<PropiedadDTO> obtenerMejoresPropiedadesDisponibles() {
         return propiedadService.obtenerMejoresPropiedadesDisponibles();
     }
+
+
 }

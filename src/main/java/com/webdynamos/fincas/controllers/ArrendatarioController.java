@@ -2,8 +2,11 @@ package com.webdynamos.fincas.controllers;
 
 import com.webdynamos.fincas.dto.ArrendatarioConPasswordDTO;
 import com.webdynamos.fincas.dto.ArrendatarioDTO;
+import com.webdynamos.fincas.dto.PropiedadDTO;
 import com.webdynamos.fincas.services.ArrendatarioService;
 
+import com.webdynamos.fincas.services.PropiedadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +63,13 @@ public class ArrendatarioController {
         } else {
             return new ResponseEntity<>("Arrendatario not found with ID: " + id, HttpStatus.NOT_FOUND);
         }
+    }
+    @Autowired
+    private PropiedadService propiedadService;
+
+    @GetMapping("/arrendatario/propiedades")
+    public ResponseEntity<List<PropiedadDTO>> getPropiedades(@RequestParam Long arrendatarioId) {
+        List<PropiedadDTO> propiedades = propiedadService.findByArrendatarioId(arrendatarioId);
+        return ResponseEntity.ok(propiedades);
     }
 }
